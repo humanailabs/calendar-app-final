@@ -139,8 +139,7 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT (FIX: FULLY MATCH DROPDOWN) ---------- */
-    /* Make the entire number input wrapper behave like the selectbox */
+    /* ---------- YEAR INPUT (EXACTLY LIKE DROPDOWN) ---------- */
     .stNumberInput > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
@@ -151,32 +150,35 @@ css = f"""
         align-items: center !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
         transition: 0.2s !important;
+        width: 100% !important;
     }}
     .stNumberInput > div:hover {{
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Remove background/border from inner input and make it take space */
+    /* Input field - transparent, flex to take space */
     .stNumberInput input {{
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0px !important;
+        margin: 0px !important;
         height: auto !important;
         color: {input_text} !important;
         text-align: center !important;
         flex: 1 !important;
         font-size: 14px !important;
         font-weight: 600 !important;
+        min-height: 34px !important;
     }}
-    /* Style the buttons to blend into the unified bar */
+    /* Buttons - merge seamlessly */
     .stNumberInput button {{
         background: transparent !important;
         border: none !important;
         border-left: 1px solid {border} !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        padding: 4px 10px !important;
+        padding: 0px 12px !important;
         color: {text} !important;
         min-width: 32px !important;
         height: 34px !important;
@@ -185,17 +187,20 @@ css = f"""
         justify-content: center !important;
         font-size: 18px !important;
         transition: 0.2s !important;
+        margin: 0 !important;
+        background-color: transparent !important;
     }}
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
         border-left-color: {heading} !important;
     }}
-    /* Rounded corners for the group */
-    .stNumberInput button:last-child {{
+    /* Round corners for the rightmost button */
+    .stNumberInput button:last-of-type {{
         border-radius: 0 8px 8px 0 !important;
     }}
-    .stNumberInput button:first-child {{
+    /* Remove left border from first button (minus) */
+    .stNumberInput button:first-of-type {{
         border-left: none !important;
     }}
 
