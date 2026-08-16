@@ -33,7 +33,7 @@ if theme == "Light":
     text = "#000000"
     sidebar_bg = "#f0f2f6"
     card_bg = "#ffffff"
-    border = "#e0e0e0"
+    border = "#d0d0d0"
     heading = "#0066cc"
     input_text = "#000000"
     btn_bg = "#e0e0e0"
@@ -43,7 +43,7 @@ elif theme == "Dark":
     text = "#fafafa"
     sidebar_bg = "#262730"
     card_bg = "#1e1e1e"
-    border = "#3d3d3d"
+    border = "#444444"
     heading = "#64ffda"
     input_text = "#fafafa"
     btn_bg = "#3d3d3d"
@@ -53,7 +53,7 @@ else:  # Navy Blue
     text = "#e6f1ff"
     sidebar_bg = "#112240"
     card_bg = "#1a2a4a"
-    border = "#233554"
+    border = "#3d5a80"
     heading = "#64ffda"
     input_text = "#ffffff"
     btn_bg = "#233554"
@@ -77,143 +77,101 @@ css = f"""
     .stApp * {{ color: {text} !important; }}
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{ color: {heading} !important; }}
 
-    /* ---------- MOBILE UI: FULL SCREEN, NO SCROLL ---------- */
+    /* ---------- MOBILE UI COMPACT ---------- */
     @media (max-width: 768px) {{
-        .main > div {{
-            padding-top: 0rem !important;
-            padding-bottom: 0rem !important;
-        }}
-        .stTitle {{
-            margin-top: -2.5rem !important;
-            margin-bottom: 0rem !important;
-            font-size: 0.95rem !important;
-            padding-top: 0 !important;
-        }}
-        .stMarkdown {{
-            margin-top: -1.4rem !important;
-            margin-bottom: 0rem !important;
-            font-size: 0.65rem !important;
-        }}
-        section[data-testid="stSidebar"] {{
-            padding: 0rem 0.05rem !important;
-        }}
-        section[data-testid="stSidebar"] .stHeader {{
-            font-size: 0.65rem !important;
-            margin-top: -0.1rem !important;
-            padding-top: 0 !important;
-        }}
-        section[data-testid="stSidebar"] .stMarkdown {{
-            margin-top: -0.1rem !important;
-            font-size: 0.6rem !important;
-        }}
-        section[data-testid="stSidebar"] .stSubheader {{
-            font-size: 0.65rem !important;
-            margin-top: -0.1rem !important;
-        }}
-        .stNumberInput {{
-            margin-top: -0.4rem !important;
-            margin-bottom: 0rem !important;
-        }}
-        .stNumberInput input {{
-            padding: 0px 4px !important;
-            font-size: 13px !important;
-            height: 22px !important;
-        }}
-        .stNumberInput button {{
-            padding: 0px 4px !important;
-            font-size: 16px !important;
-            height: 22px !important;
-            min-width: 24px !important;
-        }}
-        .stSelectbox {{
-            margin-top: -0.4rem !important;
-            margin-bottom: 0rem !important;
-        }}
-        .stSelectbox div {{
-            min-height: 22px !important;
-            padding: 0px 4px !important;
-            font-size: 13px !important;
-        }}
-        /* Remove duplicate selectbox border/overlap */
-        .stSelectbox div[data-baseweb="select"] {{
-            border: 1px solid {border} !important;
-            background-color: {card_bg} !important;
-            border-radius: 4px !important;
-        }}
-        .stSelectbox div[data-baseweb="select"] > div {{
-            border: none !important;
-            background-color: transparent !important;
-        }}
-        .stDivider {{
-            margin: 0.05rem 0 !important;
-            padding: 0 !important;
-        }}
-        hr {{
-            margin: 0.05rem 0 !important;
-        }}
-        .stButton button {{
-            font-size: 13px !important;
-            padding: 2px 0px !important;
-            margin: 0.05rem 0 !important;
-            min-height: 28px !important;
-        }}
-        .stButton button[kind="primary"] {{
-            font-size: 15px !important;
-            padding: 3px 0px !important;
-            min-height: 28px !important;
-        }}
-        .stFileUploader {{
-            min-height: 70px !important;
-            padding: 4px 6px !important;
-            margin-top: -0.3rem !important;
-            margin-bottom: 0rem !important;
-        }}
-        .stFileUploader * {{
-            font-size: 11px !important;
-            line-height: 1.1 !important;
-        }}
-        .stFileUploader button {{
-            padding: 2px 10px !important;
-            font-size: 11px !important;
-            margin: 2px 0 !important;
-        }}
+        .main > div {{ padding-top: 0rem !important; padding-bottom: 0rem !important; }}
+        .stTitle {{ margin-top: -2.5rem !important; margin-bottom: 0rem !important; font-size: 0.95rem !important; padding-top: 0 !important; }}
+        .stMarkdown {{ margin-top: -1.4rem !important; margin-bottom: 0rem !important; font-size: 0.65rem !important; }}
+        section[data-testid="stSidebar"] {{ padding: 0rem 0.05rem !important; }}
+        section[data-testid="stSidebar"] .stHeader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; padding-top: 0 !important; }}
+        section[data-testid="stSidebar"] .stMarkdown {{ margin-top: -0.1rem !important; font-size: 0.6rem !important; }}
+        section[data-testid="stSidebar"] .stSubheader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; }}
+        .stNumberInput {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
+        .stNumberInput input {{ padding: 0px 4px !important; font-size: 13px !important; height: 22px !important; }}
+        .stNumberInput button {{ padding: 0px 4px !important; font-size: 16px !important; height: 22px !important; min-width: 24px !important; }}
+        .stSelectbox {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
+        .stSelectbox > div {{ min-height: 24px !important; padding: 0px 6px !important; }}
+        .stDivider {{ margin: 0.05rem 0 !important; padding: 0 !important; }}
+        hr {{ margin: 0.05rem 0 !important; }}
+        .stButton button {{ font-size: 13px !important; padding: 2px 0px !important; margin: 0.05rem 0 !important; min-height: 28px !important; }}
+        .stButton button[kind="primary"] {{ font-size: 15px !important; padding: 3px 0px !important; min-height: 28px !important; }}
+        .stFileUploader {{ min-height: 70px !important; padding: 4px 6px !important; margin-top: -0.3rem !important; margin-bottom: 0rem !important; }}
+        .stFileUploader * {{ font-size: 11px !important; line-height: 1.1 !important; }}
+        .stFileUploader button {{ padding: 2px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }}
     }}
 
-    /* ---- OVERLAP FIX FOR THEME SELECTOR (TOP-RIGHT) ---- */
-    .stSelectbox {{
+    /* ---------- GLOBAL FIX: UNIFIED DROPDOWN BOX (SIDEBAR + MAIN) ---------- */
+    /* Outer box */
+    .stSelectbox > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
+        padding: 0px 12px !important;
+        min-height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        transition: 0.2s !important;
     }}
-    .stSelectbox > div {{
+    .stSelectbox > div:hover {{
+        border-color: {heading} !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }}
+    /* Inner text container */
+    .stSelectbox > div > div {{
+        border: none !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        color: {input_text} !important;
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        width: 100% !important;
+    }}
+    /* Dropdown arrow */
+    .stSelectbox svg {{
+        fill: {input_text} !important;
+        margin-right: 0px !important;
+        opacity: 0.7 !important;
+    }}
+    /* Remove extra Streamlit baseweb borders */
+    .stSelectbox div[data-baseweb="select"] {{
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }}
+    .stSelectbox div[data-baseweb="select"] > div {{
         border: none !important;
         background: transparent !important;
     }}
 
-    /* ---- PLUS/MINUS BUTTONS ---- */
+    /* ---------- PLUS/MINUS BUTTONS (CLEAN) ---------- */
     .stNumberInput button {{
         background-color: {btn_bg} !important;
         color: {text} !important;
         border: 1px solid {border} !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
         padding: 4px 10px !important;
         font-size: 18px !important;
-        min-width: 30px !important;
+        min-width: 32px !important;
+        transition: 0.2s !important;
     }}
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
+        border-color: {heading} !important;
     }}
     .stNumberInput input {{
         background-color: {card_bg} !important;
         color: {input_text} !important;
-        border-radius: 4px !important;
+        border-radius: 6px !important;
         border: 1px solid {border} !important;
         padding: 6px !important;
         text-align: center !important;
+        font-weight: 600 !important;
     }}
 
-    /* ---- UPLOAD BOX: GOLDEN TEXT ---- */
+    /* ---------- UPLOAD BOX (GOLDEN TEXT) ---------- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
@@ -232,12 +190,7 @@ css = f"""
     .stFileUploader div,
     .stFileUploader span,
     .stFileUploader p,
-    .stFileUploader label,
-    .stFileUploader .st-emotion-cache-1jicfl2,
-    .stFileUploader .st-emotion-cache-1wmy9hl,
-    .stFileUploader .st-emotion-cache-1dyqmsa,
-    .stFileUploader .st-emotion-cache-1jicfl2 *,
-    .stFileUploader .st-emotion-cache-1wmy9hl * {{
+    .stFileUploader label {{
         color: {gold} !important;
         background-color: transparent !important;
         font-size: 14px !important;
@@ -258,7 +211,7 @@ css = f"""
         color: white !important;
     }}
 
-    /* ---- NORMAL BUTTONS ---- */
+    /* ---------- NORMAL BUTTONS ---------- */
     .stButton button {{
         background-color: #1a5a8c !important;
         color: white !important;
@@ -268,7 +221,7 @@ css = f"""
     }}
     .stButton button:hover {{ background-color: #2a6a9c !important; }}
 
-    /* ---- CREATE PDF BUTTON ---- */
+    /* ---------- CREATE PDF BUTTON ---------- */
     .stButton button[kind="primary"] {{
         background-color: #e63946 !important;
         color: white !important;
@@ -295,8 +248,6 @@ css = f"""
         background-color: {card_bg} !important;
         border-left: 4px solid {heading} !important;
     }}
-
-    /* ---- DOWNLOAD BUTTON ---- */
     .stDownloadButton button {{
         background-color: {bg} !important;
         border: 1px solid {border} !important;
@@ -306,7 +257,6 @@ css = f"""
         background-color: #1a5a8c !important;
         color: white !important;
     }}
-
     hr {{ border-color: {border} !important; }}
     footer {{ visibility: hidden; }}
 </style>
