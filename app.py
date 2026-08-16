@@ -96,9 +96,7 @@ css = f"""
     }}
 
     /* ---------- UNIFIED DROPDOWN BOX ---------- */
-    .stSelectbox {{
-        width: 100% !important;
-    }}
+    .stSelectbox {{ width: 100% !important; }}
     .stSelectbox > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
@@ -228,7 +226,6 @@ css = f"""
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
-
 st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
@@ -245,8 +242,7 @@ with st.sidebar:
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
-
-# ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
+    # ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
 st.html(
     f"""
     <script>
@@ -254,7 +250,6 @@ st.html(
             function styleNumberInputs() {{
                 const containers = document.querySelectorAll('.stNumberInput');
                 containers.forEach(function(container) {{
-                    // Find the main wrapper div
                     const wrapper = container.querySelector('div:first-child');
                     if (wrapper) {{
                         wrapper.style.backgroundColor = '{card_bg}';
@@ -267,7 +262,6 @@ st.html(
                         wrapper.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
                     }}
                     
-                    // Style the input field
                     const input = container.querySelector('input');
                     if (input) {{
                         input.style.background = 'transparent';
@@ -283,7 +277,6 @@ st.html(
                         input.style.width = '100%';
                     }}
                     
-                    // Style the buttons
                     const buttons = container.querySelectorAll('button');
                     buttons.forEach(function(btn, index) {{
                         btn.style.background = 'transparent';
@@ -302,7 +295,6 @@ st.html(
                         btn.style.cursor = 'pointer';
                         btn.style.transition = '0.2s';
                         
-                        // Hover effect
                         btn.addEventListener('mouseenter', function() {{
                             this.style.backgroundColor = '{heading}';
                             this.style.color = '{bg}';
@@ -319,7 +311,6 @@ st.html(
                         }});
                     }});
                     
-                    // Round corners: first button left, last button right
                     if (buttons.length > 0) {{
                         buttons[0].style.borderRadius = '8px 0 0 8px';
                         buttons[buttons.length - 1].style.borderRadius = '0 8px 8px 0';
@@ -327,7 +318,6 @@ st.html(
                 }});
             }}
             
-            // Run immediately and after DOM updates
             styleNumberInputs();
             const observer = new MutationObserver(styleNumberInputs);
             observer.observe(document.body, {{ childList: true, subtree: true }});
@@ -336,7 +326,6 @@ st.html(
     """,
     height=0
 )
-
 # ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
@@ -469,7 +458,7 @@ def generate_pdf(year, country, uploaded_files):
 if generate_btn:
     if not uploaded_files:
         st.error("❌ Please upload at least 1 image.")
-   elif len(uploaded_files) < 2:
+    elif len(uploaded_files) < 2:
         st.warning("⚠️ You uploaded only a few. For best results, upload 13 images (Cover + 12 months).")
     else:
         with st.spinner("⏳ Generating your PDF..."):
