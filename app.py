@@ -15,24 +15,19 @@ st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout
 # ---------- NAVY THEME (full match) ----------
 st.markdown("""
 <style>
-    /* Main background */
     .stApp, .stApp > header, .stApp > div {
         background-color: #0a192f !important;
     }
-    /* All text white */
     .stApp * {
         color: #e6f1ff !important;
     }
-    /* Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #112240 !important;
         border-right: 1px solid #233554 !important;
     }
-    /* Headings */
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
         color: #64ffda !important;
     }
-    /* Buttons (normal) */
     .stButton button {
         background-color: #1a5a8c !important;
         color: white !important;
@@ -43,9 +38,8 @@ st.markdown("""
     .stButton button:hover {
         background-color: #2a6a9c !important;
     }
-    /* CREATE PDF BUTTON (with icon) */
     .stButton button[kind="primary"] {
-        background-color: #e63946 !important;  /* Adobe red */
+        background-color: #e63946 !important;
         color: white !important;
         font-size: 24px !important;
         font-weight: 900 !important;
@@ -63,23 +57,19 @@ st.markdown("""
         transform: scale(1.03) !important;
         box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
     }
-    /* File uploader */
     .stFileUploader {
         background-color: #112240 !important;
         border: 2px dashed #233554 !important;
         border-radius: 10px !important;
     }
-    /* Inputs */
     .stSelectbox, .stNumberInput {
         background-color: #112240 !important;
         border-radius: 8px !important;
     }
-    /* Alerts */
     .stAlert, .stSuccess, .stError, .stWarning {
         background-color: #112240 !important;
         border-left: 4px solid #64ffda !important;
     }
-    /* Download button */
     .stDownloadButton button {
         background-color: #0a192f !important;
         border: 1px solid #233554 !important;
@@ -89,11 +79,9 @@ st.markdown("""
         background-color: #1a5a8c !important;
         color: white !important;
     }
-    /* Divider */
     hr {
         border-color: #233554 !important;
     }
-    /* Footer (if any) */
     footer {
         visibility: hidden;
     }
@@ -114,7 +102,6 @@ with st.sidebar:
     st.subheader("🖼️ Upload Images")
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
-    # ----- BUTTON WITH PDF ICON -----
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
 def get_holidays(year, country):
