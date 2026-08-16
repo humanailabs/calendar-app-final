@@ -84,9 +84,6 @@ css = f"""
         section[data-testid="stSidebar"] .stMarkdown {{ margin-top: -0.1rem !important; font-size: 0.6rem !important; }}
         section[data-testid="stSidebar"] .stSubheader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; }}
         .stNumberInput {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
-        .stNumberInput > div {{ min-height: 24px !important; padding: 0px 6px !important; }}
-        .stNumberInput input {{ padding: 0px 4px !important; font-size: 13px !important; height: 22px !important; }}
-        .stNumberInput button {{ padding: 0px 4px !important; font-size: 16px !important; height: 22px !important; min-width: 24px !important; }}
         .stSelectbox {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
         .stSelectbox > div {{ min-height: 24px !important; padding: 0px 6px !important; }}
         .stDivider {{ margin: 0.05rem 0 !important; padding: 0 !important; }}
@@ -99,6 +96,9 @@ css = f"""
     }}
 
     /* ---------- UNIFIED DROPDOWN BOX ---------- */
+    .stSelectbox {{
+        width: 100% !important;
+    }}
     .stSelectbox > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
@@ -139,7 +139,11 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT (EXACTLY LIKE DROPDOWN) ---------- */
+    /* ---------- YEAR INPUT (FULLY MATCH DROPDOWN) ---------- */
+    /* Entire number input component */
+    .stNumberInput {{
+        width: 100% !important;
+    }}
     .stNumberInput > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
@@ -156,7 +160,7 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Input field - transparent, flex to take space */
+    /* Input field */
     .stNumberInput input {{
         background: transparent !important;
         border: none !important;
@@ -170,8 +174,9 @@ css = f"""
         font-size: 14px !important;
         font-weight: 600 !important;
         min-height: 34px !important;
+        width: auto !important;
     }}
-    /* Buttons - merge seamlessly */
+    /* Buttons */
     .stNumberInput button {{
         background: transparent !important;
         border: none !important;
@@ -189,17 +194,18 @@ css = f"""
         transition: 0.2s !important;
         margin: 0 !important;
         background-color: transparent !important;
+        line-height: 1 !important;
     }}
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
         border-left-color: {heading} !important;
     }}
-    /* Round corners for the rightmost button */
+    /* Rounding right button */
     .stNumberInput button:last-of-type {{
         border-radius: 0 8px 8px 0 !important;
     }}
-    /* Remove left border from first button (minus) */
+    /* Remove left border from minus button */
     .stNumberInput button:first-of-type {{
         border-left: none !important;
     }}
