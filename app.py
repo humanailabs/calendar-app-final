@@ -37,7 +37,7 @@ if theme == "Light":
     heading = "#0066cc"
     input_text = "#000000"
     btn_bg = "#e0e0e0"
-    upload_text_color = "#d4af37"  # Golden for visibility
+    gold = "#b8860b"
 elif theme == "Dark":
     bg = "#0e1117"
     text = "#fafafa"
@@ -47,7 +47,7 @@ elif theme == "Dark":
     heading = "#64ffda"
     input_text = "#fafafa"
     btn_bg = "#3d3d3d"
-    upload_text_color = "#f5c542"  # Golden
+    gold = "#f5c542"
 else:  # Navy Blue
     bg = "#0a192f"
     text = "#e6f1ff"
@@ -57,7 +57,7 @@ else:  # Navy Blue
     heading = "#64ffda"
     input_text = "#ffffff"
     btn_bg = "#233554"
-    upload_text_color = "#f5c542"  # Golden
+    gold = "#f5c542"
 
 # ---------- CSS ----------
 css = f"""
@@ -71,87 +71,98 @@ css = f"""
     section[data-testid="stSidebar"] {{
         background-color: {sidebar_bg} !important;
         border-right: 1px solid {border} !important;
-        padding: 0.5rem 0.3rem !important;
+        padding: 0.2rem 0.3rem !important;
     }}
     .main > div {{ background-color: {bg} !important; }}
     .stApp * {{ color: {text} !important; }}
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{ color: {heading} !important; }}
 
-    /* ---------- MOBILE UI COMPACT (NO SCROLL) ---------- */
+    /* ---------- MOBILE UI: FULL SCREEN (NO SCROLL) ---------- */
     @media (max-width: 768px) {{
         .main > div {{
             padding-top: 0rem !important;
             padding-bottom: 0rem !important;
         }}
         .stTitle {{
-            margin-top: -2.0rem !important;
+            margin-top: -2.2rem !important;
             margin-bottom: 0rem !important;
-            font-size: 1.1rem !important;
+            font-size: 1.0rem !important;
+            padding-top: 0 !important;
         }}
         .stMarkdown {{
-            margin-top: -1.0rem !important;
-            margin-bottom: 0.1rem !important;
-            font-size: 0.8rem !important;
+            margin-top: -1.2rem !important;
+            margin-bottom: 0rem !important;
+            font-size: 0.7rem !important;
         }}
         section[data-testid="stSidebar"] {{
-            padding: 0.1rem 0.2rem !important;
+            padding: 0rem 0.1rem !important;
         }}
         section[data-testid="stSidebar"] .stHeader {{
-            margin-top: -0.2rem !important;
+            font-size: 0.7rem !important;
+            margin-top: -0.1rem !important;
             padding-top: 0 !important;
-            font-size: 0.9rem !important;
         }}
         section[data-testid="stSidebar"] .stMarkdown {{
-            margin-top: 0rem !important;
-            font-size: 0.75rem !important;
+            margin-top: -0.1rem !important;
+            font-size: 0.65rem !important;
+        }}
+        section[data-testid="stSidebar"] .stSubheader {{
+            font-size: 0.7rem !important;
+            margin-top: -0.1rem !important;
         }}
         .stNumberInput {{
             margin-top: -0.3rem !important;
+            margin-bottom: 0rem !important;
         }}
         .stNumberInput input {{
-            padding: 1px 4px !important;
-            font-size: 14px !important;
-            height: 28px !important;
+            padding: 0px 4px !important;
+            font-size: 13px !important;
+            height: 24px !important;
         }}
         .stNumberInput button {{
-            padding: 0px 8px !important;
-            font-size: 14px !important;
-            height: 28px !important;
+            padding: 0px 6px !important;
+            font-size: 13px !important;
+            height: 24px !important;
         }}
         .stSelectbox {{
             margin-top: -0.3rem !important;
+            margin-bottom: 0rem !important;
         }}
         .stSelectbox div {{
-            min-height: 28px !important;
-            padding: 0px 6px !important;
-            font-size: 14px !important;
-        }}
-        .stButton button {{
-            font-size: 14px !important;
-            padding: 3px 0px !important;
-            margin: 0.1rem 0 !important;
-        }}
-        .stButton button[kind="primary"] {{
-            font-size: 18px !important;
-            padding: 6px 0px !important;
-        }}
-        .stFileUploader {{
-            min-height: 100px !important;
-            padding: 10px 8px !important;
-            margin-top: -0.2rem !important;
-        }}
-        .stFileUploader * {{
+            min-height: 24px !important;
+            padding: 0px 4px !important;
             font-size: 13px !important;
         }}
-        hr {{
-            margin: 0.2rem 0 !important;
-        }}
         .stDivider {{
+            margin: 0.1rem 0 !important;
             padding: 0 !important;
         }}
-        .stSubheader {{
-            font-size: 0.9rem !important;
+        hr {{
+            margin: 0.1rem 0 !important;
+        }}
+        .stButton button {{
+            font-size: 13px !important;
+            padding: 2px 0px !important;
+            margin: 0.05rem 0 !important;
+        }}
+        .stButton button[kind="primary"] {{
+            font-size: 16px !important;
+            padding: 4px 0px !important;
+        }}
+        .stFileUploader {{
+            min-height: 80px !important;
+            padding: 6px 6px !important;
             margin-top: -0.2rem !important;
+            margin-bottom: 0rem !important;
+        }}
+        .stFileUploader * {{
+            font-size: 12px !important;
+            line-height: 1.2 !important;
+        }}
+        .stFileUploader button {{
+            padding: 2px 12px !important;
+            font-size: 12px !important;
+            margin: 2px 0 !important;
         }}
     }}
 
@@ -176,13 +187,13 @@ css = f"""
         padding: 8px !important;
     }}
 
-    /* ---- UPLOAD BOX: GOLDEN TEXT FOR VISIBILITY ---- */
+    /* ---- UPLOAD BOX: GOLDEN TEXT (VERIFIED VISIBLE IN DARK/NAVY) ---- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
         border-radius: 16px !important;
-        padding: 40px 20px !important;
-        min-height: 180px !important;
+        padding: 30px 15px !important;
+        min-height: 150px !important;
         width: 100% !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
         transition: 0.3s !important;
@@ -191,7 +202,7 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
     }}
-    /* Force golden color for all uploader text */
+    /* ALL TEXT IN UPLOADER - GOLDEN */
     .stFileUploader *,
     .stFileUploader div,
     .stFileUploader span,
@@ -199,11 +210,14 @@ css = f"""
     .stFileUploader label,
     .stFileUploader .st-emotion-cache-1jicfl2,
     .stFileUploader .st-emotion-cache-1wmy9hl,
-    .stFileUploader .st-emotion-cache-1dyqmsa {{
-        color: {upload_text_color} !important;
+    .stFileUploader .st-emotion-cache-1dyqmsa,
+    .stFileUploader .st-emotion-cache-1jicfl2 *,
+    .stFileUploader .st-emotion-cache-1wmy9hl * {{
+        color: {gold} !important;
         background-color: transparent !important;
         font-size: 15px !important;
         line-height: 1.6 !important;
+        font-weight: 500 !important;
     }}
     .stFileUploader button {{
         background-color: {heading} !important;
@@ -212,7 +226,7 @@ css = f"""
         border-radius: 8px !important;
         border: none !important;
         padding: 8px 20px !important;
-        margin: 10px 0 !important;
+        margin: 8px 0 !important;
     }}
     .stFileUploader button:hover {{
         background-color: #1a5a8c !important;
