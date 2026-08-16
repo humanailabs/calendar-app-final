@@ -226,6 +226,7 @@ css = f"""
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
+
 st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
@@ -242,7 +243,8 @@ with st.sidebar:
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
-    # ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
+
+# ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
 st.html(
     f"""
     <script>
@@ -264,7 +266,7 @@ st.html(
                     
                     const input = container.querySelector('input');
                     if (input) {{
-                        input.style.background = 'transparent';
+                        input.style.backgroundColor = '{card_bg}';
                         input.style.border = 'none';
                         input.style.boxShadow = 'none';
                         input.style.padding = '0px 8px';
@@ -279,7 +281,7 @@ st.html(
                     
                     const buttons = container.querySelectorAll('button');
                     buttons.forEach(function(btn, index) {{
-                        btn.style.background = 'transparent';
+                        btn.style.backgroundColor = '{card_bg}';
                         btn.style.border = 'none';
                         btn.style.borderLeft = (index === 0) ? 'none' : '1px solid {border}';
                         btn.style.borderRadius = '0';
@@ -303,7 +305,7 @@ st.html(
                             }}
                         }});
                         btn.addEventListener('mouseleave', function() {{
-                            this.style.backgroundColor = 'transparent';
+                            this.style.backgroundColor = '{card_bg}';
                             this.style.color = '{text}';
                             if (this !== buttons[0]) {{
                                 this.style.borderLeftColor = '{border}';
@@ -325,7 +327,7 @@ st.html(
     </script>
     """,
     height=0
-)
+    )
 # ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
