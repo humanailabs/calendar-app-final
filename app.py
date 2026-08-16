@@ -17,12 +17,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- THEME SELECTOR ----------
-theme = st.sidebar.selectbox(
-    "🎨 Theme",
-    ["Light", "Dark", "Navy Blue"],
-    index=2
-)
+# ---------- THEME SELECTOR (TOP-RIGHT, SIDEBAR SE HATAO) ----------
+col1, col2 = st.columns([6, 1])
+with col2:
+    theme = st.selectbox(
+        "Theme",
+        ["Light", "Dark", "Navy Blue"],
+        index=2,
+        label_visibility="collapsed"
+    )
 
 # ---------- THEME COLORS ----------
 if theme == "Light":
@@ -33,6 +36,7 @@ if theme == "Light":
     border = "#e0e0e0"
     heading = "#0066cc"
     input_text = "#000000"
+    btn_bg = "#e0e0e0"
 elif theme == "Dark":
     bg = "#0e1117"
     text = "#fafafa"
@@ -41,6 +45,7 @@ elif theme == "Dark":
     border = "#3d3d3d"
     heading = "#64ffda"
     input_text = "#fafafa"
+    btn_bg = "#3d3d3d"
 else:  # Navy Blue
     bg = "#0a192f"
     text = "#e6f1ff"
@@ -49,57 +54,73 @@ else:  # Navy Blue
     border = "#233554"
     heading = "#64ffda"
     input_text = "#ffffff"
+    btn_bg = "#233554"
 
 # ---------- CSS ----------
 css = f"""
 <style>
-    /* Main background */
-    .stApp {{
-        background-color: {bg} !important;
-    }}
-    /* Header (3 dots wala) - ab visible hai */
+    .stApp {{ background-color: {bg} !important; }}
     header[data-testid="stHeader"] {{
         background-color: {bg} !important;
         border-bottom: 1px solid {border} !important;
     }}
-    header[data-testid="stHeader"] * {{
-        color: {text} !important;
-    }}
-    /* Sidebar */
+    header[data-testid="stHeader"] * {{ color: {text} !important; }}
     section[data-testid="stSidebar"] {{
         background-color: {sidebar_bg} !important;
         border-right: 1px solid {border} !important;
     }}
-    /* Main content */
-    .main > div {{
-        background-color: {bg} !important;
+    .main > div {{ background-color: {bg} !important; }}
+    .stApp * {{ color: {text} !important; }}
+    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{ color: {heading} !important; }}
+
+    /* ---- PLUS/MINUS BUTTONS (ab dikhenge) ---- */
+    .stNumberInput button {{
+        background-color: {btn_bg} !important;
+        color: {text} !important;
+        border: 1px solid {border} !important;
+        border-radius: 4px !important;
+        padding: 5px 12px !important;
+        font-size: 18px !important;
     }}
-    /* All text */
-    .stApp * {{
+    .stNumberInput button:hover {{
+        background-color: {heading} !important;
+        color: {bg} !important;
+    }}
+    .stNumberInput input {{
+        background-color: {card_bg} !important;
+        color: {input_text} !important;
+        border-radius: 4px !important;
+        border: 1px solid {border} !important;
+        padding: 8px !important;
+    }}
+
+    /* ---- UPLOAD BOX (bada aur clean) ---- */
+    .stFileUploader {{
+        background-color: {card_bg} !important;
+        border: 2px dashed {border} !important;
+        border-radius: 12px !important;
+        padding: 40px 20px !important;
+        min-height: 150px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }}
+    .stFileUploader * {{
         color: {text} !important;
     }}
-    /* Headings */
-    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{
-        color: {heading} !important;
-    }}
-    /* ---- INPUT FIELDS (Text dikhega ab) ---- */
-    .stNumberInput input, 
+
+    /* ---- SELECTBOX / INPUTS ---- */
     .stSelectbox div, 
     .stSelectbox div div,
-    .stTextInput input,
-    .stTextArea textarea,
-    .stSelectbox div[data-baseweb="select"],
-    .stFileUploader span {{
+    .stSelectbox div[data-baseweb="select"] {{
         background-color: {card_bg} !important;
         color: {input_text} !important;
         border-radius: 8px !important;
+        border: 1px solid {border} !important;
     }}
-    /* Placeholder text */
-    .stNumberInput input::placeholder,
-    .stTextInput input::placeholder {{
-        color: #aaaaaa !important;
-    }}
-    /* Normal buttons */
+    .stSelectbox svg {{ fill: {text} !important; }}
+
+    /* ---- NORMAL BUTTONS ---- */
     .stButton button {{
         background-color: #1a5a8c !important;
         color: white !important;
@@ -107,10 +128,9 @@ css = f"""
         border: none !important;
         font-weight: bold !important;
     }}
-    .stButton button:hover {{
-        background-color: #2a6a9c !important;
-    }}
-    /* Create PDF button */
+    .stButton button:hover {{ background-color: #2a6a9c !important; }}
+
+    /* ---- CREATE PDF BUTTON ---- */
     .stButton button[kind="primary"] {{
         background-color: #e63946 !important;
         color: white !important;
@@ -130,18 +150,14 @@ css = f"""
         transform: scale(1.03) !important;
         box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
     }}
-    /* File uploader */
-    .stFileUploader {{
-        background-color: {card_bg} !important;
-        border: 2px dashed {border} !important;
-        border-radius: 10px !important;
-    }}
-    /* Alerts */
+
+    /* ---- ALERTS ---- */
     .stAlert, .stSuccess, .stError, .stWarning {{
         background-color: {card_bg} !important;
         border-left: 4px solid {heading} !important;
     }}
-    /* Download button */
+
+    /* ---- DOWNLOAD BUTTON ---- */
     .stDownloadButton button {{
         background-color: {bg} !important;
         border: 1px solid {border} !important;
@@ -151,14 +167,9 @@ css = f"""
         background-color: #1a5a8c !important;
         color: white !important;
     }}
-    /* Divider */
-    hr {{
-        border-color: {border} !important;
-    }}
-    /* Footer */
-    footer {{
-        visibility: hidden;
-    }}
+
+    hr {{ border-color: {border} !important; }}
+    footer {{ visibility: hidden; }}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
@@ -166,6 +177,7 @@ st.markdown(css, unsafe_allow_html=True)
 st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
+# ---------- SIDEBAR (Theme ab yahan nahi hai) ----------
 with st.sidebar:
     st.header("⚙️ Settings")
     year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
@@ -179,7 +191,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
-# ---------- HOLIDAYS ----------
+# ---------- HOLIDAYS & PDF GENERATION (same) ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
@@ -204,7 +216,6 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
-# ---------- PDF GENERATION ----------
 def generate_pdf(year, country, uploaded_files):
     temp_dir = tempfile.mkdtemp()
     img_dir = os.path.join(temp_dir, "images")
