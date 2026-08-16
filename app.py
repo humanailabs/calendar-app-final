@@ -12,32 +12,14 @@ from datetime import datetime
 
 st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout="centered")
 
-# ---------- NAVY THEME (full match) ----------
 st.markdown("""
 <style>
-    .stApp, .stApp > header, .stApp > div {
-        background-color: #0a192f !important;
-    }
-    .stApp * {
-        color: #e6f1ff !important;
-    }
-    section[data-testid="stSidebar"] {
-        background-color: #112240 !important;
-        border-right: 1px solid #233554 !important;
-    }
-    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
-        color: #64ffda !important;
-    }
-    .stButton button {
-        background-color: #1a5a8c !important;
-        color: white !important;
-        border-radius: 8px !important;
-        border: none !important;
-        font-weight: bold !important;
-    }
-    .stButton button:hover {
-        background-color: #2a6a9c !important;
-    }
+    .stApp { background-color: #0a192f; }
+    .stApp * { color: #e6f1ff !important; }
+    section[data-testid="stSidebar"] { background-color: #112240 !important; }
+    h1, h2, h3 { color: #64ffda !important; }
+    .stButton button { background-color: #1a5a8c !important; color: white !important; border-radius: 8px !important; border: none !important; }
+    .stButton button:hover { background-color: #2a6a9c !important; }
     .stButton button[kind="primary"] {
         background-color: #e63946 !important;
         color: white !important;
@@ -48,43 +30,17 @@ st.markdown("""
         box-shadow: 0 0 25px rgba(230, 57, 70, 0.6) !important;
         border: 2px solid #ff6b6b !important;
         text-transform: uppercase !important;
-        letter-spacing: 2px !important;
-        transition: 0.2s !important;
     }
     .stButton button[kind="primary"]:hover {
         background-color: #ff6b6b !important;
         color: #0a192f !important;
         transform: scale(1.03) !important;
-        box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
     }
-    .stFileUploader {
-        background-color: #112240 !important;
-        border: 2px dashed #233554 !important;
-        border-radius: 10px !important;
-    }
-    .stSelectbox, .stNumberInput {
-        background-color: #112240 !important;
-        border-radius: 8px !important;
-    }
-    .stAlert, .stSuccess, .stError, .stWarning {
-        background-color: #112240 !important;
-        border-left: 4px solid #64ffda !important;
-    }
-    .stDownloadButton button {
-        background-color: #0a192f !important;
-        border: 1px solid #233554 !important;
-        color: #64ffda !important;
-    }
-    .stDownloadButton button:hover {
-        background-color: #1a5a8c !important;
-        color: white !important;
-    }
-    hr {
-        border-color: #233554 !important;
-    }
-    footer {
-        visibility: hidden;
-    }
+    .stFileUploader { background-color: #112240 !important; border: 2px dashed #233554 !important; }
+    .stAlert { background-color: #112240 !important; border-left: 4px solid #64ffda !important; }
+    .stDownloadButton button { background-color: #0a192f !important; border: 1px solid #233554 !important; color: #64ffda !important; }
+    hr { border-color: #233554 !important; }
+    footer { visibility: hidden; }
 </style>
 """, unsafe_allow_html=True)
 
