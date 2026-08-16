@@ -10,14 +10,68 @@ import shutil
 import io
 from datetime import datetime
 
+# ---------------- CUSTOM THEME: NAVY BLUE ----------------
 st.set_page_config(page_title="Pro Calendar Generator", page_icon="📅", layout="centered")
+
+st.markdown("""
+<style>
+    .stApp {
+        background-color: #0a192f;   /* Navy Blue */
+    }
+    .stApp * {
+        color: #e6f1ff !important;   /* Light text */
+    }
+    .stSidebar, section[data-testid="stSidebar"] {
+        background-color: #112240 !important;
+    }
+    .stButton button {
+        background-color: #1a5a8c !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: bold !important;
+    }
+    .stButton button:hover {
+        background-color: #2a6a9c !important;
+    }
+    .stFileUploader {
+        background-color: #112240 !important;
+        border: 2px dashed #233554 !important;
+        border-radius: 10px !important;
+    }
+    .stSelectbox, .stNumberInput {
+        background-color: #112240 !important;
+        border-radius: 8px !important;
+    }
+    .stAlert, .stSuccess, .stError, .stWarning {
+        background-color: #112240 !important;
+        border-left: 4px solid #64ffda !important;
+    }
+    .stDownloadButton button {
+        background-color: #0a192f !important;
+        border: 1px solid #233554 !important;
+        color: #64ffda !important;
+    }
+    .stDownloadButton button:hover {
+        background-color: #1a5a8c !important;
+        color: white !important;
+    }
+    hr {
+        border-color: #233554 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 st.title("📅 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
 with st.sidebar:
     st.header("⚙️ Settings")
     year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
-    country = st.selectbox("Country (Holidays)", ["India", "Switzerland", "USA"])
+    country = st.selectbox("Country (Holidays)", [
+        "India", "Switzerland", "USA", "United Kingdom", 
+        "Germany", "France", "UAE", "Canada", "Australia", "Singapore"
+    ])
     st.divider()
     st.subheader("🖼️ Upload Images")
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
@@ -32,6 +86,20 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (1,18):"MLK", (2,15):"Presidents", (5,31):"Memorial", (7,4):"Independence", (9,6):"Labor", (10,11):"Columbus", (11,11):"Veterans", (11,25):"Thanksgiving", (12,25):"Christmas"}
     elif country == "India":
         h = {(1,26):"Republic", (3,17):"Holi", (4,2):"Good Fri", (8,15):"Independence", (10,2):"Gandhi", (11,4):"Diwali", (12,25):"Christmas"}
+    elif country == "United Kingdom":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,3):"Early May", (5,31):"Spring", (8,30):"Summer", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Germany":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,1):"Labour", (5,6):"Ascension", (5,17):"Whit Mon", (10,3):"Unity", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "France":
+        h = {(1,1):"New Year", (4,5):"Easter Mon", (5,1):"Labour", (5,8):"VE Day", (5,6):"Ascension", (5,17):"Whit Mon", (7,14):"Bastille", (8,15):"Assumption", (11,1):"All Saints", (11,11):"Armistice", (12,25):"Christmas"}
+    elif country == "UAE":
+        h = {(1,1):"New Year", (3,26):"Good Fri", (5,6):"Ascension", (7,30):"Islamic NY", (11,4):"Prophet BD", (12,2):"National Day", (12,25):"Christmas"}
+    elif country == "Canada":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,24):"Victoria", (7,1):"Canada", (9,6):"Labor", (10,11):"Thanksgiving", (11,11):"Remembrance", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Australia":
+        h = {(1,1):"New Year", (1,26):"Australia", (4,2):"Good Fri", (4,5):"Easter Mon", (4,25):"Anzac", (6,14):"King's BD", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Singapore":
+        h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
 def generate_pdf(year, country, uploaded_files):
@@ -39,13 +107,11 @@ def generate_pdf(year, country, uploaded_files):
     img_dir = os.path.join(temp_dir, "images")
     os.makedirs(img_dir)
     
-    cover_found = False
     month_counter = 1
     for f in uploaded_files:
         if "cover" in f.name.lower():
             with open(os.path.join(img_dir, "cover.jpg"), "wb") as out:
                 out.write(f.getbuffer())
-            cover_found = True
         elif month_counter <= 12:
             with open(os.path.join(img_dir, f"{month_counter:02d}.jpg"), "wb") as out:
                 out.write(f.getbuffer())
@@ -60,53 +126,79 @@ def generate_pdf(year, country, uploaded_files):
     pdf_buffer = io.BytesIO()
     c = canvas.Canvas(pdf_buffer, pagesize=A4)
 
-    # Cover
-    c.setPageSize(A4); c.setFillColor(colors.red); c.rect(0,0,210*mm,297*mm,fill=1)
-    c.setStrokeColor(colors.white); c.setLineWidth(2); c.rect(10*mm,10*mm,190*mm,277*mm, fill=0, stroke=1)
+    c.setPageSize(A4)
+    c.setFillColor(colors.red)
+    c.rect(0, 0, 210*mm, 297*mm, fill=1, stroke=0)
+    c.setStrokeColor(colors.white)
+    c.setLineWidth(2)
+    c.rect(10*mm, 10*mm, 190*mm, 277*mm, fill=0, stroke=1)
     img = find_image(0)
     if img:
-        try: c.drawImage(img, 30*mm, 60*mm, 150*mm, 150*mm, preserveAspectRatio=True)
-        except: pass
+        try:
+            c.drawImage(img, 30*mm, 60*mm, 150*mm, 150*mm, preserveAspectRatio=True)
+        except:
+            pass
     else:
-        c.setFillColor(colors.white); c.setFont("Helvetica-Bold", 60); c.drawCentredString(105*mm, 180*mm, str(year))
-    c.setFillColor(colors.white); c.setFont("Helvetica", 10); c.drawCentredString(105*mm, 25*mm, f"{country} Calendar")
+        c.setFillColor(colors.white)
+        c.setFont("Helvetica-Bold", 60)
+        c.drawCentredString(105*mm, 180*mm, str(year))
+    c.setFillColor(colors.white)
+    c.setFont("Helvetica", 10)
+    c.drawCentredString(105*mm, 25*mm, f"{country} Calendar")
     c.showPage()
 
     for m in range(1, 13):
-        # Photo Page
-        c.setPageSize(A4); c.setFillColor(colors.white); c.rect(0,0,210*mm,297*mm,fill=1)
-        c.setFillColor(colors.lightgrey); c.rect(23*mm,23*mm,170*mm,240*mm,fill=1)
-        c.setStrokeColor(colors.black); c.setLineWidth(2); c.rect(20*mm,20*mm,170*mm,240*mm, fill=0, stroke=1)
+        c.setPageSize(A4)
+        c.setFillColor(colors.white)
+        c.rect(0, 0, 210*mm, 297*mm, fill=1, stroke=0)
+        c.setFillColor(colors.lightgrey)
+        c.rect(23*mm, 23*mm, 170*mm, 240*mm, fill=1, stroke=0)
+        c.setStrokeColor(colors.black)
+        c.setLineWidth(2)
+        c.rect(20*mm, 20*mm, 170*mm, 240*mm, fill=0, stroke=1)
         img = find_image(m)
         if img:
-            try: c.drawImage(img, 25*mm, 25*mm, 160*mm, 220*mm, preserveAspectRatio=True)
-            except: pass
+            try:
+                c.drawImage(img, 25*mm, 25*mm, 160*mm, 220*mm, preserveAspectRatio=True)
+            except:
+                pass
         else:
-            c.setFillColor(colors.black); c.setFont("Helvetica-Bold",24)
+            c.setFillColor(colors.black)
+            c.setFont("Helvetica-Bold", 24)
             c.drawCentredString(105*mm, 140*mm, f"PHOTO {m:02d}")
-        c.setFillColor(colors.red); c.setFont("Helvetica-Bold",14)
+        c.setFillColor(colors.red)
+        c.setFont("Helvetica-Bold", 14)
         c.drawCentredString(105*mm, 14*mm, calendar.month_name[m].upper())
         c.showPage()
 
-        # Calendar Page
-        c.setPageSize(A4); c.setFillColor(colors.white); c.rect(0,0,210*mm,297*mm,fill=1)
-        c.setFillColor(colors.red); c.rect(15*mm,270*mm,180*mm,18*mm,fill=1)
-        c.setFillColor(colors.white); c.setFont("Helvetica-Bold",16)
+        c.setPageSize(A4)
+        c.setFillColor(colors.white)
+        c.rect(0, 0, 210*mm, 297*mm, fill=1, stroke=0)
+        c.setFillColor(colors.red)
+        c.rect(15*mm, 270*mm, 180*mm, 18*mm, fill=1, stroke=0)
+        c.setFillColor(colors.white)
+        c.setFont("Helvetica-Bold", 16)
         c.drawCentredString(105*mm, 276*mm, f"{calendar.month_name[m].upper()} {year}")
         left, top, cw, ch = 20*mm, 250*mm, 24*mm, 13*mm
-        for i, day in enumerate(["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]):
-            c.setFillColor(colors.red if i in (5,6) else colors.black)
-            c.setFont("Helvetica-Bold",10); c.drawCentredString(left+i*cw+cw/2, top-5, day)
+        for i, day in enumerate(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]):
+            c.setFillColor(colors.red if i in (5, 6) else colors.black)
+            c.setFont("Helvetica-Bold", 10)
+            c.drawCentredString(left + i*cw + cw/2, top - 5, day)
         cal = calendar.monthcalendar(year, m)
         for r, week in enumerate(cal):
             y_pos = top - (r+1)*ch - 8*mm
             for col, day in enumerate(week):
                 if day:
                     x = left + col*cw
-                    if col in (5,6): c.setFillColor(colors.lightgrey); c.rect(x, y_pos-2*mm, cw, ch+1*mm, fill=1)
-                    c.setFillColor(colors.red if ((m,day) in holidays or col==6) else colors.black)
-                    c.setFont("Helvetica",11); c.drawCentredString(x+cw/2, y_pos+3*mm, str(day))
-                    if (m,day) in holidays: c.setFillColor(colors.red); c.circle(x+cw/2, y_pos-2*mm, 1.2*mm, fill=1)
+                    if col in (5, 6):
+                        c.setFillColor(colors.lightgrey)
+                        c.rect(x, y_pos-2*mm, cw, ch+1*mm, fill=1, stroke=0)
+                    c.setFillColor(colors.red if ((m, day) in holidays or col == 6) else colors.black)
+                    c.setFont("Helvetica", 11)
+                    c.drawCentredString(x + cw/2, y_pos + 3*mm, str(day))
+                    if (m, day) in holidays:
+                        c.setFillColor(colors.red)
+                        c.circle(x + cw/2, y_pos - 2*mm, 1.2*mm, fill=1)
         c.showPage()
 
     c.save()
