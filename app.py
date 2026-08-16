@@ -138,30 +138,38 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT & +/- BUTTONS (SAME AS DROPDOWN) ---------- */
+    /* ---------- YEAR INPUT & +/- BUTTONS (MATCH DROPDOWN) ---------- */
     .stNumberInput input {{
         background-color: {card_bg} !important;
         color: {input_text} !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         border: 1px solid {border} !important;
         padding: 6px !important;
         text-align: center !important;
         font-weight: 600 !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+        transition: 0.2s !important;
+    }}
+    .stNumberInput input:hover {{
+        border-color: {heading} !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
     .stNumberInput button {{
-        background-color: {card_bg} !important;  /* Now matches dropdown */
+        background-color: {card_bg} !important;
         color: {text} !important;
         border: 1px solid {border} !important;
-        border-radius: 6px !important;
+        border-radius: 8px !important;
         padding: 4px 10px !important;
         font-size: 18px !important;
         min-width: 32px !important;
         transition: 0.2s !important;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
     }}
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
         border-color: {heading} !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
 
     /* ---------- UPLOAD BOX ---------- */
