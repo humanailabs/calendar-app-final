@@ -20,10 +20,33 @@ st.markdown("""
     }
     .stApp * {
         color: #e6f1ff !important;   /* Light text */
+import streamlit as st
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import mm
+from reportlab.lib import colors
+import calendar
+import os
+import tempfile
+import shutil
+import io
+from datetime import datetime
+
+st.set_page_config(page_title="Pro Calendar Generator", page_icon="📅", layout="centered")
+
+# ---------------- NAVY THEME + CUSTOM CREATE BUTTON ----------------
+st.markdown("""
+<style>
+    .stApp, .stApp > header, .stApp > div {
+        background-color: #0a192f !important;
     }
-    .stSidebar, section[data-testid="stSidebar"] {
+    .stApp * {
+        color: #e6f1ff !important;
+    }
+    section[data-testid="stSidebar"] {
         background-color: #112240 !important;
     }
+    /* ---- Normal buttons ---- */
     .stButton button {
         background-color: #1a5a8c !important;
         color: white !important;
@@ -34,6 +57,27 @@ st.markdown("""
     .stButton button:hover {
         background-color: #2a6a9c !important;
     }
+    /* ---- SPECIAL: CREATE button (bigger, brighter) ---- */
+    .stButton button[kind="primary"] {
+        background-color: #00b4d8 !important;
+        color: #0a192f !important;
+        font-size: 22px !important;
+        font-weight: 900 !important;
+        padding: 12px 0px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 0 20px rgba(0, 180, 216, 0.5) !important;
+        border: 2px solid #90e0ef !important;
+        transition: 0.2s !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+    }
+    .stButton button[kind="primary"]:hover {
+        background-color: #90e0ef !important;
+        color: #0a192f !important;
+        transform: scale(1.02) !important;
+        box-shadow: 0 0 40px rgba(0, 180, 216, 0.8) !important;
+    }
+    /* ---- Other elements ---- */
     .stFileUploader {
         background-color: #112240 !important;
         border: 2px dashed #233554 !important;
@@ -56,6 +100,9 @@ st.markdown("""
         background-color: #1a5a8c !important;
         color: white !important;
     }
+    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
+        color: #64ffda !important;
+    }
     hr {
         border-color: #233554 !important;
     }
@@ -76,7 +123,8 @@ with st.sidebar:
     st.subheader("🖼️ Upload Images")
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
-    generate_btn = st.button("🚀 Generate Calendar PDF", type="primary", use_container_width=True)
+    # ---- BUTTON CHANGED HERE ----
+    generate_btn = st.button("✨ Create", type="primary", use_container_width=True)
 
 def get_holidays(year, country):
     h = {}
@@ -224,4 +272,120 @@ if generate_btn:
                     use_container_width=True
                 )
             except Exception as e:
+                st.error(f"Error: {e}")
+    }
+    .stSidebar, section[data-testid="stSidebar"] {
+        background-color: #112240 !important;
+    }
+    .stButton button {
+        background-color: #1a5a8c !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: bold !important;
+    }
+    .stButton button:hover {
+        background-color: #2a6a9c !important;
+    }
+    .stFileUploader {
+        background-color: #112240 !important;
+        border: 2px dashed #233554 !important;
+        border-radius: 10px !important;
+    }
+    .stSelectbox, .stNumberInput {
+        background-color: #112240 !important;
+        border-radius: 8px !important;
+    }
+    .stAlert, .stSuccess, .stError, .stWarning {
+        background-color: #112240 !important;
+        border-left: 4px solid #64ffda !important;
+    }
+    .stDownloadButton button {
+        background-color: #0a192f !important;
+        border: 1px solid #233554 !important;
+        color: #64ffda !important;
+    }
+    .stDownloadButton button:hover {
+        background-color: #1a5a8c !important;
+        color: white !important;
+    }
+    hr {
+        border-color: #233554 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+st.title("📅 Professional Calendar Generator")
+st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
+
+with st.sidebar:
+    st.header("⚙️ Settings")
+    year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
+    country = st.selectbox("Country (Holidays)", [
+        "India", "Switzerland", "USA", "United Kingdom", 
+        "Germany", "France", "UAE", "Canada", "Australia", "Singapore"
+    ])
+    st.divider()
+    st.subheader("🖼️ Upload Images")
+    st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
+    uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
+    generate_btn = st.button("🚀 Generate Calendar PDF", type="primary", use_container_width=True)
+
+def get_holidays(year, country):
+    h = {}
+    if country == "Switzerland":
+        h = {(1,1):"New Year", (1,2):"Berchtold", (3,26):"Good Fri", (3,29):"Easter Mon", (5,6):"Ascension", (5,17):"Whit Mon", (8,1):"National", (12,25):"Christmas", (12,26):"St. Stephen"}
+    elif country == "USA":
+        h = {(1,1):"New Year", (1,18):"MLK", (2,15):"Presidents", (5,31):"Memorial", (7,4):"Independence", (9,6):"Labor", (10,11):"Columbus", (11,11):"Veterans", (11,25):"Thanksgiving", (12,25):"Christmas"}
+    elif country == "India":
+        h = {(1,26):"Republic", (3,17):"Holi", (4,2):"Good Fri", (8,15):"Independence", (10,2):"Gandhi", (11,4):"Diwali", (12,25):"Christmas"}
+    elif country == "United Kingdom":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,3):"Early May", (5,31):"Spring", (8,30):"Summer", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Germany":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,1):"Labour", (5,6):"Ascension", (5,17):"Whit Mon", (10,3):"Unity", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "France":
+        h = {(1,1):"New Year", (4,5):"Easter Mon", (5,1):"Labour", (5,8):"VE Day", (5,6):"Ascension", (5,17):"Whit Mon", (7,14):"Bastille", (8,15):"Assumption", (11,1):"All Saints", (11,11):"Armistice", (12,25):"Christmas"}
+    elif country == "UAE":
+        h = {(1,1):"New Year", (3,26):"Good Fri", (5,6):"Ascension", (7,30):"Islamic NY", (11,4):"Prophet BD", (12,2):"National Day", (12,25):"Christmas"}
+    elif country == "Canada":
+        h = {(1,1):"New Year", (4,2):"Good Fri", (4,5):"Easter Mon", (5,24):"Victoria", (7,1):"Canada", (9,6):"Labor", (10,11):"Thanksgiving", (11,11):"Remembrance", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Australia":
+        h = {(1,1):"New Year", (1,26):"Australia", (4,2):"Good Fri", (4,5):"Easter Mon", (4,25):"Anzac", (6,14):"King's BD", (12,25):"Christmas", (12,26):"Boxing"}
+    elif country == "Singapore":
+        h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
+    return h
+
+def generate_pdf(year, country, uploaded_files):
+    temp_dir = tempfile.mkdtemp()
+    img_dir = os.path.join(temp_dir, "images")
+    os.makedirs(img_dir)
+    
+    month_counter = 1
+    for f in uploaded_files:
+        if "cover" in f.name.lower():
+            with open(os.path.join(img_dir, "cover.jpg"), "wb") as out:
+                out.write(f.getbuffer())
+        elif month_counter <= 12:
+            with open(os.path.join(img_dir, f"{month_counter:02d}.jpg"), "wb") as out:
+                out.write(f.getbuffer())
+            month_counter += 1
+
+    holidays = get_holidays(year, country)
+    
+    def find_image(num):
+        path = os.path.join(img_dir, "cover.jpg") if num == 0 else os.path.join(img_dir, f"{num:02d}.jpg")
+        return path if os.path.exists(path) and os.path.getsize(path) > 0 else None
+
+    pdf_buffer = io.BytesIO()
+    c = canvas.Canvas(pdf_buffer, pagesize=A4)
+
+    c.setPageSize(A4)
+    c.setFillColor(colors.red)
+    c.rect(0, 0, 210*mm, 297*mm, fill=1, stroke=0)
+    c.setStrokeColor(colors.white)
+    c.setLineWidth(2)
+    c.rect(10*mm, 10*mm, 190*mm, 277*mm, fill=0, stroke=1)
+    img = find_image(0)
+    if img:
+ Exception as e:
                 st.error(f"Error: {e}")
