@@ -139,79 +139,27 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT (100% MATCH DROPDOWN + BUTTONS LEFT) ---------- */
+    /* ---------- YEAR INPUT (BASIC STYLING) ---------- */
     .stNumberInput {{
         width: 100% !important;
     }}
-    /* Outer wrapper - exactly like dropdown */
-    .stNumberInput > div {{
+    .stNumberInput input {{
         background-color: {card_bg} !important;
+        color: {input_text} !important;
+        border-radius: 8px !important;
+        border: 1px solid {border} !important;
+        padding: 6px !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+    }}
+    .stNumberInput button {{
+        background-color: {card_bg} !important;
+        color: {text} !important;
         border: 1px solid {border} !important;
         border-radius: 8px !important;
-        padding: 0px 4px 0px 4px !important;
-        min-height: 34px !important;
-        display: flex !important;
-        align-items: center !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
-        transition: 0.2s !important;
-        width: 100% !important;
-    }}
-    .stNumberInput > div:hover {{
-        border-color: {heading} !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-    }}
-    /* Input field - flex to take space, centered text */
-    .stNumberInput input {{
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        padding: 0px 4px !important;
-        margin: 0px !important;
-        height: auto !important;
-        color: {input_text} !important;
-        text-align: center !important;
-        flex: 1 !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        min-height: 34px !important;
-        order: 1 !important;
-        width: auto !important;
-    }}
-    /* Both buttons - on the LEFT side */
-    .stNumberInput button {{
-        background: transparent !important;
-        border: none !important;
-        border-right: 1px solid {border} !important;
-        border-radius: 0 !important;
-        box-shadow: none !important;
-        padding: 0px 10px !important;
-        color: {text} !important;
-        min-width: 32px !important;
-        height: 34px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        padding: 4px 10px !important;
         font-size: 18px !important;
-        transition: 0.2s !important;
-        margin: 0 !important;
-        background-color: transparent !important;
-        order: 0 !important;
-        line-height: 1 !important;
-    }}
-    /* Remove right border from the last button (+ button) */
-    .stNumberInput button:last-of-type {{
-        border-right: none !important;
-        border-radius: 0 !important;
-    }}
-    /* Hover effect for buttons */
-    .stNumberInput button:hover {{
-        background-color: {heading} !important;
-        color: {bg} !important;
-        border-right-color: {heading} !important;
-    }}
-    /* First button (-) - no left border, but we keep right border */
-    .stNumberInput button:first-of-type {{
-        border-left: none !important;
+        min-width: 32px !important;
     }}
 
     /* ---------- UPLOAD BOX ---------- */
@@ -320,6 +268,67 @@ with st.sidebar:
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
+
+# ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
+import streamlit.components.v1 as components
+components.html(
+    f"""
+    <script>
+        // Wait for Streamlit to fully render
+        setTimeout(function() {{
+            // Find all number input containers
+            const containers = document.querySelectorAll('.stNumberInput');
+            containers.forEach(function(container) {{
+                // Get the input field
+                const input = container.querySelector('input');
+                // Get the buttons (step buttons)
+                const buttons = container.querySelectorAll('button');
+                
+                if (input) {{
+                    // Style input to match dropdown
+                    input.style.backgroundColor = '{card_bg}';
+                    input.style.color = '{input_text}';
+                    input.style.border = '1px solid {border}';
+                    input.style.borderRadius = '8px';
+                    input.style.padding = '6px 12px';
+                    input.style.textAlign = 'center';
+                    input.style.fontWeight = '600';
+                    input.style.fontSize = '14px';
+                    input.style.width = '100%';
+                    input.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+                }}
+                
+                buttons.forEach(function(btn) {{
+                    // Style buttons to match
+                    btn.style.backgroundColor = '{card_bg}';
+                    btn.style.color = '{text}';
+                    btn.style.border = '1px solid {border}';
+                    btn.style.borderRadius = '8px';
+                    btn.style.padding = '4px 12px';
+                    btn.style.fontSize = '18px';
+                    btn.style.minWidth = '32px';
+                    btn.style.cursor = 'pointer';
+                    btn.style.transition = '0.2s';
+                    
+                    // Hover effect via mouse events
+                    btn.addEventListener('mouseenter', function() {{
+                        this.style.backgroundColor = '{heading}';
+                        this.style.color = '{bg}';
+                        this.style.borderColor = '{heading}';
+                    }});
+                    btn.addEventListener('mouseleave', function() {{
+                        this.style.backgroundColor = '{card_bg}';
+                        this.style.color = '{text}';
+                        this.style.border = '1px solid {border}';
+                    }});
+                }});
+            }});
+        }}, 500);
+    </script>
+    """,
+    height=0,
+    width=0
+)
 
 # ---------- HOLIDAYS ----------
 def get_holidays(year, country):
