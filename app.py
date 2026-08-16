@@ -37,6 +37,7 @@ if theme == "Light":
     heading = "#0066cc"
     input_text = "#000000"
     gold = "#b8860b"
+    plus_minus_color = "#000000"
 elif theme == "Dark":
     bg = "#0e1117"
     text = "#fafafa"
@@ -46,6 +47,7 @@ elif theme == "Dark":
     heading = "#64ffda"
     input_text = "#fafafa"
     gold = "#f5c542"
+    plus_minus_color = "#fafafa"
 else:  # Navy Blue
     bg = "#0a192f"
     text = "#e6f1ff"
@@ -55,6 +57,7 @@ else:  # Navy Blue
     heading = "#64ffda"
     input_text = "#ffffff"
     gold = "#f5c542"
+    plus_minus_color = "#e6f1ff"
 
 # ---------- CSS ----------
 css = f"""
@@ -83,9 +86,6 @@ css = f"""
         section[data-testid="stSidebar"] .stHeader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; padding-top: 0 !important; }}
         section[data-testid="stSidebar"] .stMarkdown {{ margin-top: -0.1rem !important; font-size: 0.6rem !important; }}
         section[data-testid="stSidebar"] .stSubheader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; }}
-        .stNumberInput {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
-        .stSelectbox {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
-        .stSelectbox > div {{ min-height: 24px !important; padding: 0px 6px !important; }}
         .stDivider {{ margin: 0.05rem 0 !important; padding: 0 !important; }}
         hr {{ margin: 0.05rem 0 !important; }}
         .stButton button {{ font-size: 13px !important; padding: 2px 0px !important; margin: 0.05rem 0 !important; min-height: 28px !important; }}
@@ -137,25 +137,66 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR BOX (FIXED: NO INNER BORDER, CLEAN) ---------- */
-    .stNumberInput > div {{
+    /* ---------- CUSTOM YEAR BOX (MATCH DROPDOWN PERFECTLY) ---------- */
+    .custom-year-wrapper {{
+        display: flex !important;
+        align-items: center !important;
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
         border-radius: 8px !important;
-        padding: 0px 0px 0px 8px !important;
+        padding: 0px 0px 0px 12px !important;
         min-height: 34px !important;
-        display: flex !important;
-        align-items: center !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
         transition: 0.2s !important;
         width: 100% !important;
     }}
-    .stNumberInput > div:hover {{
+    .custom-year-wrapper:hover {{
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Input field - transparent, no border, center aligned */
-    .stNumberInput input {{
+    .custom-year-btn {{
+        background: transparent !important;
+        border: none !important;
+        border-left: 1px solid {border} !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        padding: 0px 12px !important;
+        color: {plus_minus_color} !important;
+        min-width: 32px !important;
+        height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 20px !important;
+        font-weight: 700 !important;
+        cursor: pointer !important;
+        transition: 0.2s !important;
+        background-color: transparent !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+    }}
+    .custom-year-btn:first-child {{
+        border-left: none !important;
+        border-radius: 8px 0 0 8px !important;
+    }}
+    .custom-year-btn:last-child {{
+        border-radius: 0 8px 8px 0 !important;
+        border-left: 1px solid {border} !important;
+    }}
+    .custom-year-btn:hover {{
+        background-color: {heading} !important;
+        color: {bg} !important !important;
+        border-left-color: {heading} !important;
+    }}
+    .custom-year-btn:first-child:hover {{
+        border-left-color: transparent !important;
+        border-right-color: {heading} !important;
+    }}
+    .custom-year-btn:last-child:hover {{
+        border-left-color: {heading} !important;
+        border-right-color: transparent !important;
+    }}
+    .custom-year-input {{
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
@@ -169,50 +210,12 @@ css = f"""
         font-weight: 600 !important;
         min-height: 34px !important;
         width: 100% !important;
-        order: 1 !important;
         outline: none !important;
+        background-color: transparent !important;
     }}
-    /* Buttons - transparent, no borders except separator */
-    .stNumberInput button {{
-        background: transparent !important;
-        border: none !important;
-        border-left: 1px solid {border} !important;
-        border-radius: 0 !important;
+    .custom-year-input:focus {{
+        outline: none !important;
         box-shadow: none !important;
-        padding: 0px 12px !important;
-        color: {text} !important;
-        min-width: 32px !important;
-        height: 34px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        font-size: 18px !important;
-        transition: 0.2s !important;
-        margin: 0 !important;
-        order: 0 !important;
-        line-height: 1 !important;
-        cursor: pointer !important;
-    }}
-    .stNumberInput button:first-of-type {{
-        border-left: none !important;
-        border-radius: 8px 0 0 8px !important;
-    }}
-    .stNumberInput button:last-of-type {{
-        border-radius: 0 8px 8px 0 !important;
-        border-left: 1px solid {border} !important;
-    }}
-    .stNumberInput button:hover {{
-        background-color: {heading} !important;
-        color: {bg} !important;
-        border-left-color: {heading} !important;
-    }}
-    .stNumberInput button:first-of-type:hover {{
-        border-left-color: transparent !important;
-        border-right-color: {heading} !important;
-    }}
-    .stNumberInput button:last-of-type:hover {{
-        border-left-color: {heading} !important;
-        border-right-color: transparent !important;
     }}
 
     /* ---------- UPLOAD BOX ---------- */
@@ -311,7 +314,33 @@ st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!
 # ---------- SIDEBAR ----------
 with st.sidebar:
     st.header("⚙️ Settings")
-    year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
+    
+    # --- CUSTOM YEAR SELECTOR (replaces st.number_input) ---
+    st.markdown("**Year**")
+    col_a, col_b, col_c = st.columns([1, 4, 1])
+    with col_a:
+        if st.button("−", key="dec_year", use_container_width=True):
+            st.session_state.year = max(2024, st.session_state.get("year", 2027) - 1)
+    with col_b:
+        year = st.text_input(
+            "Year",
+            value=str(st.session_state.get("year", 2027)),
+            key="year_input",
+            label_visibility="collapsed"
+        )
+        try:
+            st.session_state.year = int(year)
+        except:
+            pass
+    with col_c:
+        if st.button("+", key="inc_year", use_container_width=True):
+            st.session_state.year = min(2040, st.session_state.get("year", 2027) + 1)
+    
+    # Ensure year is always set
+    if "year" not in st.session_state:
+        st.session_state.year = 2027
+    year = st.session_state.year
+    
     country = st.selectbox("Country (Holidays)", [
         "India", "Switzerland", "USA", "United Kingdom", 
         "Germany", "France", "UAE", "Canada", "Australia", "Singapore"
@@ -321,7 +350,48 @@ with st.sidebar:
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
-    # ---------- HOLIDAYS ----------
+
+# Apply custom CSS to the text input to make it look like dropdown
+st.markdown(
+    f"""
+    <style>
+        .stTextInput > div {{
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }}
+        .stTextInput input {{
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            text-align: center !important;
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            height: 34px !important;
+            color: {input_text} !important;
+        }}
+        /* Hide the number input arrows from the text input */
+        .stTextInput input[type="text"]::-webkit-outer-spin-button,
+        .stTextInput input[type="text"]::-webkit-inner-spin-button {{
+            -webkit-appearance: none;
+            margin: 0;
+        }}
+        .stTextInput input[type="text"] {{
+            -moz-appearance: textfield;
+        }}
+        /* Make the columns for year selector compact */
+        .stColumn {{
+            display: flex;
+            align-items: center;
+        }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+# ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
