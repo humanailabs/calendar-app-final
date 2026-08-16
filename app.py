@@ -36,7 +36,6 @@ if theme == "Light":
     border = "#d0d0d0"
     heading = "#0066cc"
     input_text = "#000000"
-    btn_bg = "#e0e0e0"
     gold = "#b8860b"
 elif theme == "Dark":
     bg = "#0e1117"
@@ -46,7 +45,6 @@ elif theme == "Dark":
     border = "#444444"
     heading = "#64ffda"
     input_text = "#fafafa"
-    btn_bg = "#3d3d3d"
     gold = "#f5c542"
 else:  # Navy Blue
     bg = "#0a192f"
@@ -56,7 +54,6 @@ else:  # Navy Blue
     border = "#3d5a80"
     heading = "#64ffda"
     input_text = "#ffffff"
-    btn_bg = "#233554"
     gold = "#f5c542"
 
 # ---------- CSS ----------
@@ -100,8 +97,7 @@ css = f"""
         .stFileUploader button {{ padding: 2px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }}
     }}
 
-    /* ---------- GLOBAL FIX: UNIFIED DROPDOWN BOX (SIDEBAR + MAIN) ---------- */
-    /* Outer box */
+    /* ---------- UNIFIED DROPDOWN BOX ---------- */
     .stSelectbox > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
@@ -117,7 +113,6 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Inner text container */
     .stSelectbox > div > div {{
         border: none !important;
         background: transparent !important;
@@ -128,13 +123,11 @@ css = f"""
         font-weight: 500 !important;
         width: 100% !important;
     }}
-    /* Dropdown arrow */
     .stSelectbox svg {{
         fill: {input_text} !important;
         margin-right: 0px !important;
         opacity: 0.7 !important;
     }}
-    /* Remove extra Streamlit baseweb borders */
     .stSelectbox div[data-baseweb="select"] {{
         border: none !important;
         background: transparent !important;
@@ -145,9 +138,18 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- PLUS/MINUS BUTTONS (CLEAN) ---------- */
+    /* ---------- YEAR INPUT & +/- BUTTONS (SAME AS DROPDOWN) ---------- */
+    .stNumberInput input {{
+        background-color: {card_bg} !important;
+        color: {input_text} !important;
+        border-radius: 6px !important;
+        border: 1px solid {border} !important;
+        padding: 6px !important;
+        text-align: center !important;
+        font-weight: 600 !important;
+    }}
     .stNumberInput button {{
-        background-color: {btn_bg} !important;
+        background-color: {card_bg} !important;  /* Now matches dropdown */
         color: {text} !important;
         border: 1px solid {border} !important;
         border-radius: 6px !important;
@@ -161,17 +163,8 @@ css = f"""
         color: {bg} !important;
         border-color: {heading} !important;
     }}
-    .stNumberInput input {{
-        background-color: {card_bg} !important;
-        color: {input_text} !important;
-        border-radius: 6px !important;
-        border: 1px solid {border} !important;
-        padding: 6px !important;
-        text-align: center !important;
-        font-weight: 600 !important;
-    }}
 
-    /* ---------- UPLOAD BOX (GOLDEN TEXT) ---------- */
+    /* ---------- UPLOAD BOX ---------- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
@@ -211,7 +204,7 @@ css = f"""
         color: white !important;
     }}
 
-    /* ---------- NORMAL BUTTONS ---------- */
+    /* ---------- BUTTONS ---------- */
     .stButton button {{
         background-color: #1a5a8c !important;
         color: white !important;
@@ -221,7 +214,6 @@ css = f"""
     }}
     .stButton button:hover {{ background-color: #2a6a9c !important; }}
 
-    /* ---------- CREATE PDF BUTTON ---------- */
     .stButton button[kind="primary"] {{
         background-color: #e63946 !important;
         color: white !important;
@@ -243,7 +235,6 @@ css = f"""
         box-shadow: 0 0 40px rgba(230, 57, 70, 0.8) !important;
     }}
 
-    /* ---- ALERTS ---- */
     .stAlert, .stSuccess, .stError, .stWarning {{
         background-color: {card_bg} !important;
         border-left: 4px solid {heading} !important;
