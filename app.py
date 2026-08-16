@@ -137,13 +137,12 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT (FORCE STYLE) ---------- */
-    /* Outer wrapper */
+    /* ---------- YEAR BOX (FIXED: NO INNER BORDER, CLEAN) ---------- */
     .stNumberInput > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
         border-radius: 8px !important;
-        padding: 0px 0px 0px 4px !important;
+        padding: 0px 0px 0px 8px !important;
         min-height: 34px !important;
         display: flex !important;
         align-items: center !important;
@@ -155,9 +154,9 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Input field */
+    /* Input field - transparent, no border, center aligned */
     .stNumberInput input {{
-        background: {card_bg} !important;
+        background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0px 8px !important;
@@ -171,10 +170,11 @@ css = f"""
         min-height: 34px !important;
         width: 100% !important;
         order: 1 !important;
+        outline: none !important;
     }}
-    /* Buttons */
+    /* Buttons - transparent, no borders except separator */
     .stNumberInput button {{
-        background: {card_bg} !important;
+        background: transparent !important;
         border: none !important;
         border-left: 1px solid {border} !important;
         border-radius: 0 !important;
@@ -321,95 +321,7 @@ with st.sidebar:
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
-
-# ---------- JAVASCRIPT TO FORCE YEAR BOX STYLING ----------
-js_code = """
-<script>
-    (function() {
-        function styleNumberInputs() {
-            const containers = document.querySelectorAll('.stNumberInput');
-            containers.forEach(function(container) {
-                // Style the wrapper div
-                const wrapper = container.querySelector('div:first-child');
-                if (wrapper) {
-                    wrapper.style.backgroundColor = '""" + card_bg + """';
-                    wrapper.style.border = '1px solid """ + border + """';
-                    wrapper.style.borderRadius = '8px';
-                    wrapper.style.padding = '0px 0px 0px 4px';
-                    wrapper.style.minHeight = '34px';
-                    wrapper.style.display = 'flex';
-                    wrapper.style.alignItems = 'center';
-                    wrapper.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
-                }
-                
-                // Style the input
-                const input = container.querySelector('input');
-                if (input) {
-                    input.style.backgroundColor = '""" + card_bg + """';
-                    input.style.border = 'none';
-                    input.style.boxShadow = 'none';
-                    input.style.padding = '0px 8px';
-                    input.style.color = '""" + input_text + """';
-                    input.style.textAlign = 'center';
-                    input.style.flex = '1';
-                    input.style.fontSize = '14px';
-                    input.style.fontWeight = '600';
-                    input.style.minHeight = '34px';
-                    input.style.width = '100%';
-                }
-                
-                // Style the buttons
-                const buttons = container.querySelectorAll('button');
-                buttons.forEach(function(btn, index) {
-                    btn.style.backgroundColor = '""" + card_bg + """';
-                    btn.style.border = 'none';
-                    btn.style.borderLeft = (index === 0) ? 'none' : '1px solid """ + border + """';
-                    btn.style.borderRadius = '0';
-                    btn.style.boxShadow = 'none';
-                    btn.style.padding = '0px 12px';
-                    btn.style.color = '""" + text + """';
-                    btn.style.minWidth = '32px';
-                    btn.style.height = '34px';
-                    btn.style.display = 'flex';
-                    btn.style.alignItems = 'center';
-                    btn.style.justifyContent = 'center';
-                    btn.style.fontSize = '18px';
-                    btn.style.cursor = 'pointer';
-                    btn.style.transition = '0.2s';
-                    
-                    btn.addEventListener('mouseenter', function() {
-                        this.style.backgroundColor = '""" + heading + """';
-                        this.style.color = '""" + bg + """';
-                        if (this !== buttons[0]) {
-                            this.style.borderLeftColor = '""" + heading + """';
-                        }
-                    });
-                    btn.addEventListener('mouseleave', function() {
-                        this.style.backgroundColor = '""" + card_bg + """';
-                        this.style.color = '""" + text + """';
-                        if (this !== buttons[0]) {
-                            this.style.borderLeftColor = '""" + border + """';
-                        }
-                    });
-                });
-                
-                if (buttons.length > 0) {
-                    buttons[0].style.borderRadius = '8px 0 0 8px';
-                    buttons[buttons.length - 1].style.borderRadius = '0 8px 8px 0';
-                }
-            });
-        }
-        
-        // Run immediately and observe for changes
-        styleNumberInputs();
-        const observer = new MutationObserver(styleNumberInputs);
-        observer.observe(document.body, { childList: true, subtree: true });
-    })();
-</script>
-"""
-st.components.v1.html(js_code, height=0)
-
-# ---------- HOLIDAYS ----------
+    # ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
