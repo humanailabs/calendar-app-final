@@ -12,35 +12,129 @@ from datetime import datetime
 
 st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout="centered")
 
-# ---------- SIRF BUTTON KE LIYE MINIMAL CSS (baaki sab default) ----------
-st.markdown("""
+# ---------- THEME SELECTOR IN SIDEBAR (must be before CSS) ----------
+# We'll read theme choice and apply CSS accordingly
+theme = st.sidebar.selectbox(
+    "🎨 Theme",
+    ["Light", "Dark", "Navy Blue"],
+    index=0  # default Light
+)
+
+# ---------- DYNAMIC CSS BASED ON THEME ----------
+if theme == "Light":
+    bg = "#ffffff"
+    text = "#000000"
+    sidebar_bg = "#f0f2f6"
+    card_bg = "#ffffff"
+    border = "#e0e0e0"
+    heading = "#0066cc"
+elif theme == "Dark":
+    bg = "#0e1117"
+    text = "#fafafa"
+    sidebar_bg = "#262730"
+    card_bg = "#1e1e1e"
+    border = "#3d3d3d"
+    heading = "#64ffda"
+else:  # Navy Blue
+    bg = "#0a192f"
+    text = "#e6f1ff"
+    sidebar_bg = "#112240"
+    card_bg = "#1a2a4a"
+    border = "#233554"
+    heading = "#64ffda"
+
+css = f"""
 <style>
-    /* Sirf Create PDF button ko red aur bold banayen */
-    .stButton button[kind="primary"] {
+    /* Main background */
+    .stApp, .stApp > header, .stApp > div {{
+        background-color: {bg} !important;
+    }}
+    /* All text */
+    .stApp * {{
+        color: {text} !important;
+    }}
+    /* Sidebar */
+    section[data-testid="stSidebar"] {{
+        background-color: {sidebar_bg} !important;
+        border-right: 1px solid {border} !important;
+    }}
+    /* Headings */
+    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{
+        color: {heading} !important;
+    }}
+    /* Button (normal) */
+    .stButton button {{
+        background-color: #1a5a8c !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: bold !important;
+    }}
+    .stButton button:hover {{
+        background-color: #2a6a9c !important;
+    }}
+    /* CREATE PDF button (red, bold) */
+    .stButton button[kind="primary"] {{
         background-color: #e63946 !important;
         color: white !important;
-        font-size: 22px !important;
+        font-size: 24px !important;
         font-weight: 900 !important;
-        padding: 12px 0px !important;
+        padding: 14px 0px !important;
         border-radius: 12px !important;
+        box-shadow: 0 0 25px rgba(230, 57, 70, 0.6) !important;
         border: 2px solid #ff6b6b !important;
         text-transform: uppercase !important;
-        letter-spacing: 1px !important;
+        letter-spacing: 2px !important;
         transition: 0.2s !important;
-        box-shadow: 0 0 20px rgba(230, 57, 70, 0.3) !important;
-    }
-    .stButton button[kind="primary"]:hover {
+    }}
+    .stButton button[kind="primary"]:hover {{
         background-color: #ff6b6b !important;
         color: #0a192f !important;
-        transform: scale(1.02) !important;
-        box-shadow: 0 0 40px rgba(230, 57, 70, 0.6) !important;
-    }
+        transform: scale(1.03) !important;
+        box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
+    }}
+    /* File uploader */
+    .stFileUploader {{
+        background-color: {card_bg} !important;
+        border: 2px dashed {border} !important;
+        border-radius: 10px !important;
+    }}
+    /* Input fields */
+    .stSelectbox, .stNumberInput {{
+        background-color: {card_bg} !important;
+        border-radius: 8px !important;
+    }}
+    /* Alerts */
+    .stAlert, .stSuccess, .stError, .stWarning {{
+        background-color: {card_bg} !important;
+        border-left: 4px solid {heading} !important;
+    }}
+    /* Download button */
+    .stDownloadButton button {{
+        background-color: {bg} !important;
+        border: 1px solid {border} !important;
+        color: {heading} !important;
+    }}
+    .stDownloadButton button:hover {{
+        background-color: #1a5a8c !important;
+        color: white !important;
+    }}
+    /* Divider */
+    hr {{
+        border-color: {border} !important;
+    }}
+    /* Footer */
+    footer {{
+        visibility: hidden;
+    }}
 </style>
-""", unsafe_allow_html=True)
+"""
+st.markdown(css, unsafe_allow_html=True)
 
 st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
+# ---------- SIDEBAR INPUTS ----------
 with st.sidebar:
     st.header("⚙️ Settings")
     year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
@@ -54,6 +148,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
+# ---------- HOLIDAY DATABASE ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
@@ -78,6 +173,7 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
+# ---------- PDF GENERATION ----------
 def generate_pdf(year, country, uploaded_files):
     temp_dir = tempfile.mkdtemp()
     img_dir = os.path.join(temp_dir, "images")
