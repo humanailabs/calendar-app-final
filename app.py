@@ -12,14 +12,14 @@ from datetime import datetime
 
 st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout="centered")
 
-# ---------- THEME SELECTOR IN SIDEBAR ----------
+# ---------- THEME SELECTOR ----------
 theme = st.sidebar.selectbox(
     "🎨 Theme",
     ["Light", "Dark", "Navy Blue"],
     index=2  # default Navy Blue
 )
 
-# ---------- THEME CSS ----------
+# ---------- THEME COLORS ----------
 if theme == "Light":
     bg = "#ffffff"
     text = "#000000"
@@ -42,21 +42,39 @@ else:  # Navy Blue
     border = "#233554"
     heading = "#64ffda"
 
+# ---------- CSS (HEADER, SIDEBAR, MAIN, FOOTER ALL IN ONE) ----------
 css = f"""
 <style>
-    .stApp, .stApp > header, .stApp > div {{
+    /* Main background */
+    .stApp {{
         background-color: {bg} !important;
     }}
-    .stApp * {{
+    /* Header (top bar) */
+    header[data-testid="stHeader"] {{
+        background-color: {bg} !important;
+        border-bottom: 1px solid {border} !important;
+    }}
+    header[data-testid="stHeader"] * {{
         color: {text} !important;
     }}
+    /* Sidebar */
     section[data-testid="stSidebar"] {{
         background-color: {sidebar_bg} !important;
         border-right: 1px solid {border} !important;
     }}
+    /* Main content */
+    .main > div {{
+        background-color: {bg} !important;
+    }}
+    /* All text */
+    .stApp * {{
+        color: {text} !important;
+    }}
+    /* Headings */
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{
         color: {heading} !important;
     }}
+    /* Normal buttons */
     .stButton button {{
         background-color: #1a5a8c !important;
         color: white !important;
@@ -67,6 +85,7 @@ css = f"""
     .stButton button:hover {{
         background-color: #2a6a9c !important;
     }}
+    /* Create PDF button */
     .stButton button[kind="primary"] {{
         background-color: #e63946 !important;
         color: white !important;
@@ -86,19 +105,23 @@ css = f"""
         transform: scale(1.03) !important;
         box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
     }}
+    /* File uploader */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
         border-radius: 10px !important;
     }}
+    /* Selectbox & Number input */
     .stSelectbox, .stNumberInput {{
         background-color: {card_bg} !important;
         border-radius: 8px !important;
     }}
+    /* Alerts */
     .stAlert, .stSuccess, .stError, .stWarning {{
         background-color: {card_bg} !important;
         border-left: 4px solid {heading} !important;
     }}
+    /* Download button */
     .stDownloadButton button {{
         background-color: {bg} !important;
         border: 1px solid {border} !important;
@@ -108,9 +131,11 @@ css = f"""
         background-color: #1a5a8c !important;
         color: white !important;
     }}
+    /* Divider */
     hr {{
         border-color: {border} !important;
     }}
+    /* Footer */
     footer {{
         visibility: hidden;
     }}
@@ -134,6 +159,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
+# ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
@@ -158,6 +184,7 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
+# ---------- PDF GENERATION ----------
 def generate_pdf(year, country, uploaded_files):
     temp_dir = tempfile.mkdtemp()
     img_dir = os.path.join(temp_dir, "images")
