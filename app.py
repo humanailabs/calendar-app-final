@@ -17,14 +17,21 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- THEME SELECTOR (TOP-RIGHT) ----------
-col1, col2 = st.columns([6, 1])
+# ---------- THEME SELECTOR + PRINT SHORTCUT (TOP-RIGHT) ----------
+col1, col2, col3 = st.columns([5, 1.3, 1.4])
 with col2:
     theme = st.selectbox(
         "Theme",
         ["Light", "Dark", "Navy Blue"],
         index=2,
         label_visibility="collapsed"
+    )
+with col3:
+    print_clicked_top = st.button(
+        "🖨️ Print",
+        key="print_btn_top",
+        help="Generate & download the calendar PDF directly",
+        use_container_width=True
     )
 
 # ---------- THEME COLORS ----------
@@ -77,30 +84,29 @@ css = f"""
     /* ---------- MOBILE UI COMPACT ---------- */
     @media (max-width: 768px) {{
         .main > div {{ padding-top: 0rem !important; padding-bottom: 0rem !important; }}
-        .stTitle {{ margin-top: -2.5rem !important; margin-bottom: 0rem !important; font-size: 0.95rem !important; padding-top: 0 !important; }}
-        .stMarkdown {{ margin-top: -1.4rem !important; margin-bottom: 0rem !important; font-size: 0.65rem !important; }}
-        section[data-testid="stSidebar"] {{ padding: 0rem 0.05rem !important; }}
-        section[data-testid="stSidebar"] .stHeader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; padding-top: 0 !important; }}
-        section[data-testid="stSidebar"] .stMarkdown {{ margin-top: -0.1rem !important; font-size: 0.6rem !important; }}
-        section[data-testid="stSidebar"] .stSubheader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; }}
-        .stDivider {{ margin: 0.05rem 0 !important; padding: 0 !important; }}
-        hr {{ margin: 0.05rem 0 !important; }}
-        .stButton button {{ font-size: 13px !important; padding: 2px 0px !important; margin: 0.05rem 0 !important; min-height: 28px !important; }}
-        .stButton button[kind="primary"] {{ font-size: 15px !important; padding: 3px 0px !important; min-height: 28px !important; }}
-        .stFileUploader {{ min-height: 46px !important; padding: 3px 6px !important; margin-top: -0.3rem !important; margin-bottom: 0rem !important; }}
-        .stFileUploader * {{ font-size: 10px !important; line-height: 1 !important; }}
-        .stFileUploader button {{ padding: 1px 8px !important; font-size: 10px !important; margin: 1px 0 !important; }}
-        .stFileUploader svg {{ width: 14px !important; height: 14px !important; }}
 
-        /* Pull the whole sidebar content block up and tighten vertical rhythm */
-        section[data-testid="stSidebar"] > div:first-child {{ padding-top: 0.1rem !important; }}
-        section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{ gap: 0.25rem !important; }}
-        section[data-testid="stSidebar"] div[data-testid="stElementContainer"] {{ margin-bottom: 0rem !important; }}
-        section[data-testid="stSidebar"] h2 {{ font-size: 0.9rem !important; margin: 0rem 0 !important; padding: 0 !important; }}
-        div[data-testid="stNumberInputContainer"], div[data-testid="stNumberInput"] > div {{ min-height: 28px !important; }}
-        div[data-testid="stNumberInput"] input {{ height: 28px !important; }}
-        div[data-testid="stNumberInput"] button {{ height: 28px !important; }}
-        .stSelectbox > div {{ min-height: 28px !important; padding: 0px 8px !important; }}
+        .app-header-title h1 {{ font-size: 1.35rem !important; }}
+        .app-header-title svg {{ width: 40px !important; height: 40px !important; }}
+        .app-header-sub {{ font-size: 0.8rem !important; }}
+
+        /* Sidebar: compact but with real, non-negative spacing so nothing overlaps */
+        section[data-testid="stSidebar"] {{ padding: 0.4rem 0.5rem !important; }}
+        section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{ gap: 0.55rem !important; }}
+        section[data-testid="stSidebar"] .stHeading h2 {{ font-size: 1rem !important; margin: 0 !important; padding: 0 !important; }}
+        section[data-testid="stSidebar"] .stMarkdown p {{ font-size: 0.75rem !important; margin: 0 !important; }}
+        section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {{ font-size: 0.8rem !important; margin: 0 0 2px 0 !important; }}
+        .stDivider {{ margin: 0.15rem 0 !important; padding: 0 !important; }}
+        hr {{ margin: 0.15rem 0 !important; }}
+        .stButton button {{ font-size: 13px !important; padding: 4px 0px !important; min-height: 32px !important; }}
+        .stButton button[kind="primary"] {{ font-size: 15px !important; padding: 6px 0px !important; min-height: 36px !important; }}
+        .stFileUploader {{ min-height: 55px !important; padding: 8px 8px !important; }}
+        .stFileUploader * {{ font-size: 11px !important; line-height: 1.2 !important; }}
+        .stFileUploader button {{ padding: 2px 10px !important; font-size: 11px !important; margin: 3px 0 !important; }}
+        .stFileUploader svg {{ width: 16px !important; height: 16px !important; }}
+        div[data-testid="stNumberInputContainer"], div[data-testid="stNumberInput"] > div {{ min-height: 32px !important; }}
+        div[data-testid="stNumberInput"] input {{ height: 32px !important; }}
+        div[data-testid="stNumberInput"] button {{ height: 32px !important; }}
+        .stSelectbox > div {{ min-height: 32px !important; padding: 0px 10px !important; }}
     }}
 
     /* ---------- UNIFIED DROPDOWN BOX ---------- */
@@ -314,6 +320,27 @@ css = f"""
     hr {{ border-color: {border} !important; }}
     footer {{ visibility: hidden; }}
 
+    /* ---------- TOP-CORNER PRINT/PDF SHORTCUT BUTTON (blue, shining) ---------- */
+    div[data-testid="stHorizontalBlock"]:first-of-type > div:nth-child(3) button {{
+        background: linear-gradient(135deg, #1565c0, #42a5f5) !important;
+        color: #ffffff !important;
+        font-weight: 800 !important;
+        border: 1px solid #90caf9 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 0 14px rgba(30,136,229,0.65) !important;
+        animation: printGlow 2.4s ease-in-out infinite;
+        transition: 0.2s !important;
+    }}
+    div[data-testid="stHorizontalBlock"]:first-of-type > div:nth-child(3) button:hover {{
+        background: linear-gradient(135deg, #1976d2, #64b5f6) !important;
+        box-shadow: 0 0 26px rgba(30,136,229,0.95) !important;
+        transform: scale(1.03) !important;
+    }}
+    @keyframes printGlow {{
+        0%, 100% {{ box-shadow: 0 0 10px rgba(30,136,229,0.55); }}
+        50% {{ box-shadow: 0 0 22px rgba(30,136,229,0.95); }}
+    }}
+
     /* ---------- HIDE NATIVE STREAMLIT MENU (System/Light/Dark/Print) ----------
        This menu is Streamlit's own built-in theme switcher — it cannot be
        synced with our custom Light/Dark/Navy Blue dropdown, so we hide it
@@ -326,20 +353,29 @@ css = f"""
 st.markdown(css, unsafe_allow_html=True)
 
 st.markdown(f"""
-<div style="display:flex; align-items:center; gap:14px; margin-top:-1rem;">
-  <svg width="54" height="54" viewBox="0 0 64 64" style="flex-shrink:0;">
+<div class="app-header-title" style="display:flex; align-items:center; gap:14px; margin-top:0.6rem; margin-bottom:0.4rem; flex-wrap:wrap;">
+  <svg width="48" height="48" viewBox="0 0 64 64" style="flex-shrink:0;">
     <path d="M14 4 H40 L50 14 V60 H14 Z" fill="#E63946" stroke="#b71c2c" stroke-width="1"/>
     <path d="M40 4 L50 14 H40 Z" fill="#ff6b6b"/>
     <text x="32" y="40" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">PDF</text>
   </svg>
-  <h1 style="margin:0; padding:0; color:{heading}; line-height:1.15;">Professional Calendar Generator</h1>
+  <h1 style="margin:0; padding:0; color:{heading}; line-height:1.2;">Professional Calendar Generator</h1>
 </div>
 """, unsafe_allow_html=True)
-st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
+st.markdown('<p class="app-header-sub" style="margin:0 0 0.5rem 0;">Upload 13 photos, select year, and get a print-ready PDF instantly!</p>', unsafe_allow_html=True)
 
 # ---------- SIDEBAR ----------
 with st.sidebar:
-    st.header("⚙️ Settings")
+    st.markdown(f"""
+    <div style="display:flex; align-items:center; gap:8px; margin:0.2rem 0 0.3rem 0;">
+      <svg width="24" height="24" viewBox="0 0 64 64" style="flex-shrink:0;">
+        <path d="M14 4 H40 L50 14 V60 H14 Z" fill="#E63946" stroke="#b71c2c" stroke-width="1"/>
+        <path d="M40 4 L50 14 H40 Z" fill="#ff6b6b"/>
+        <text x="32" y="40" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">PDF</text>
+      </svg>
+      <h2 style="margin:0; padding:0; color:{heading}; font-size:1.1rem;">Settings</h2>
+    </div>
+    """, unsafe_allow_html=True)
     year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
     country = st.selectbox("Country (Holidays)", [
         "India", "Switzerland", "USA", "United Kingdom", 
@@ -480,7 +516,7 @@ def generate_pdf(year, country, uploaded_files):
     shutil.rmtree(temp_dir)
     return pdf_buffer
 
-if generate_btn:
+if generate_btn or print_clicked_top:
     if not uploaded_files:
         st.error("❌ Please upload at least 1 image.")
     elif len(uploaded_files) < 2:
