@@ -1,3 +1,4 @@
+```python
 import streamlit as st
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
@@ -87,9 +88,20 @@ css = f"""
         hr {{ margin: 0.05rem 0 !important; }}
         .stButton button {{ font-size: 13px !important; padding: 2px 0px !important; margin: 0.05rem 0 !important; min-height: 28px !important; }}
         .stButton button[kind="primary"] {{ font-size: 15px !important; padding: 3px 0px !important; min-height: 28px !important; }}
-        .stFileUploader {{ min-height: 70px !important; padding: 4px 6px !important; margin-top: -0.3rem !important; margin-bottom: 0rem !important; }}
-        .stFileUploader * {{ font-size: 11px !important; line-height: 1.1 !important; }}
-        .stFileUploader button {{ padding: 2px 10px !important; font-size: 11px !important; margin: 2px 0 !important; }}
+        .stFileUploader {{ min-height: 46px !important; padding: 3px 6px !important; margin-top: -0.3rem !important; margin-bottom: 0rem !important; }}
+        .stFileUploader * {{ font-size: 10px !important; line-height: 1 !important; }}
+        .stFileUploader button {{ padding: 1px 8px !important; font-size: 10px !important; margin: 1px 0 !important; }}
+        .stFileUploader svg {{ width: 14px !important; height: 14px !important; }}
+
+        /* Pull the whole sidebar content block up and tighten vertical rhythm */
+        section[data-testid="stSidebar"] > div:first-child {{ padding-top: 0.1rem !important; }}
+        section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{ gap: 0.25rem !important; }}
+        section[data-testid="stSidebar"] div[data-testid="stElementContainer"] {{ margin-bottom: 0rem !important; }}
+        section[data-testid="stSidebar"] h2 {{ font-size: 0.9rem !important; margin: 0rem 0 !important; padding: 0 !important; }}
+        div[data-testid="stNumberInputContainer"], div[data-testid="stNumberInput"] > div {{ min-height: 28px !important; }}
+        div[data-testid="stNumberInput"] input {{ height: 28px !important; }}
+        div[data-testid="stNumberInput"] button {{ height: 28px !important; }}
+        .stSelectbox > div {{ min-height: 28px !important; padding: 0px 8px !important; }}
     }}
 
     /* ---------- UNIFIED DROPDOWN BOX ---------- */
@@ -138,6 +150,7 @@ css = f"""
     div[data-testid="stNumberInput"] {{
         width: 100% !important;
     }}
+    /* The real flex row that holds [- ] [input] [+] */
     div[data-testid="stNumberInputContainer"],
     div[data-testid="stNumberInput"] > div {{
         display: flex !important;
@@ -156,6 +169,8 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
+    /* Kill BaseWeb's own bordered wrapper around the input so it doesn't
+       show up as a second box floating inside the pill */
     div[data-testid="stNumberInput"] div[data-baseweb="input"] {{
         background: transparent !important;
         border: none !important;
@@ -167,6 +182,7 @@ css = f"""
         background: transparent !important;
         border: none !important;
     }}
+    /* Input field itself */
     div[data-testid="stNumberInput"] input {{
         background: transparent !important;
         border: none !important;
@@ -175,11 +191,13 @@ css = f"""
         margin: 0px !important;
         height: 34px !important;
         color: {input_text} !important;
-        text-align: center !important;
+        text-align: left !important;
+        padding-left: 14px !important;
         width: 100% !important;
         font-size: 14px !important;
         font-weight: 600 !important;
     }}
+    /* Step buttons */
     div[data-testid="stNumberInput"] button {{
         background: {card_bg} !important;
         border: none !important;
@@ -296,11 +314,28 @@ css = f"""
     }}
     hr {{ border-color: {border} !important; }}
     footer {{ visibility: hidden; }}
+
+    /* ---------- HIDE NATIVE STREAMLIT MENU (System/Light/Dark/Print) ----------
+       This menu is Streamlit's own built-in theme switcher — it cannot be
+       synced with our custom Light/Dark/Navy Blue dropdown, so we hide it
+       to avoid two separate, conflicting theme controls confusing users. */
+    #MainMenu {{ display: none !important; visibility: hidden !important; }}
+    div[data-testid="stMainMenu"] {{ display: none !important; visibility: hidden !important; }}
+    button[data-testid="stMainMenuButton"] {{ display: none !important; }}
 </style>
 """
 st.markdown(css, unsafe_allow_html=True)
 
-st.title("📄 Professional Calendar Generator")
+st.markdown(f"""
+<div style="display:flex; align-items:center; gap:14px; margin-top:-1rem;">
+  <svg width="54" height="54" viewBox="0 0 64 64" style="flex-shrink:0;">
+    <path d="M14 4 H40 L50 14 V60 H14 Z" fill="#E63946" stroke="#b71c2c" stroke-width="1"/>
+    <path d="M40 4 L50 14 H40 Z" fill="#ff6b6b"/>
+    <text x="32" y="40" font-family="Helvetica, Arial, sans-serif" font-size="13" font-weight="900" fill="white" text-anchor="middle">PDF</text>
+  </svg>
+  <h1 style="margin:0; padding:0; color:{heading}; line-height:1.15;">Professional Calendar Generator</h1>
+</div>
+""", unsafe_allow_html=True)
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
 # ---------- SIDEBAR ----------
