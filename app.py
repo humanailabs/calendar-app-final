@@ -10,9 +10,15 @@ import shutil
 import io
 from datetime import datetime
 
-st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout="centered")
+# ---------- STREAMLIT CONFIG (Disable default theme toggle) ----------
+st.set_page_config(
+    page_title="Pro Calendar Generator",
+    page_icon="📄",
+    layout="centered",
+    initial_sidebar_state="expanded"
+)
 
-# ---------- THEME SELECTOR ----------
+# ---------- THEME SELECTOR (Only this will work) ----------
 theme = st.sidebar.selectbox(
     "🎨 Theme",
     ["Light", "Dark", "Navy Blue"],
@@ -42,29 +48,27 @@ else:  # Navy Blue
     border = "#233554"
     heading = "#64ffda"
 
-# ---------- CSS (HEADER, SIDEBAR, MAIN, FOOTER ALL IN ONE) ----------
+# ---------- CSS (Overrides everything including top-left buttons) ----------
 css = f"""
 <style>
-    /* Main background */
-    .stApp {{
+    /* Hide Streamlit's built-in theme toggle (top-left) */
+    #MainMenu {{ display: none !important; }}
+    .stAppDeployButton {{ display: none !important; }}
+    .stApp > header {{ display: none !important; }}
+    
+    /* Force our background everywhere */
+    .stApp, .stApp > div, .main > div {{
         background-color: {bg} !important;
     }}
-    /* Header (top bar) */
+    /* Header (now hidden, but if visible we style it) */
     header[data-testid="stHeader"] {{
         background-color: {bg} !important;
         border-bottom: 1px solid {border} !important;
-    }}
-    header[data-testid="stHeader"] * {{
-        color: {text} !important;
     }}
     /* Sidebar */
     section[data-testid="stSidebar"] {{
         background-color: {sidebar_bg} !important;
         border-right: 1px solid {border} !important;
-    }}
-    /* Main content */
-    .main > div {{
-        background-color: {bg} !important;
     }}
     /* All text */
     .stApp * {{
@@ -159,7 +163,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
-# ---------- HOLIDAYS ----------
+# ---------- HOLIDAYS & PDF GENERATION (same as before) ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
@@ -184,7 +188,6 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
-# ---------- PDF GENERATION ----------
 def generate_pdf(year, country, uploaded_files):
     temp_dir = tempfile.mkdtemp()
     img_dir = os.path.join(temp_dir, "images")
