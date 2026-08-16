@@ -94,17 +94,14 @@ css = f"""
         padding: 8px !important;
     }}
 
-    /* ---- UPLOAD BOX (LANDSCAPE, PROFESSIONAL) ---- */
+    /* ---- UPLOAD BOX (FIXED - CLEAN FLOW) ---- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
         border-radius: 16px !important;
-        padding: 60px 40px !important;
-        min-height: 200px !important;
+        padding: 40px 20px !important;
+        min-height: 180px !important;
         width: 100% !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
         box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
         transition: 0.3s !important;
     }}
@@ -112,19 +109,25 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
     }}
-    /* Upload box ke andar sab text visible */
+    /* Upload box ke andar saare text normal flow mein */
     .stFileUploader * {{
         color: {text} !important;
-        font-size: 16px !important;
+        font-size: 15px !important;
+        line-height: 1.6 !important;
     }}
-    .stFileUploader div {{
-        color: {text} !important;
+    /* Select Images button ko bhi sahi dikhao */
+    .stFileUploader button {{
+        background-color: {heading} !important;
+        color: {bg} !important !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        border: none !important;
+        padding: 8px 20px !important;
+        margin: 10px 0 !important;
     }}
-    .stFileUploader span {{
-        color: {text} !important;
-    }}
-    .stFileUploader .st-emotion-cache-1jicfl2 {{
-        color: {text} !important;
+    .stFileUploader button:hover {{
+        background-color: #1a5a8c !important;
+        color: white !important;
     }}
 
     /* ---- SELECTBOX / INPUTS ---- */
