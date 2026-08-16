@@ -10,83 +10,97 @@ import shutil
 import io
 from datetime import datetime
 
-st.set_page_config(page_title="Pro Calendar Generator", page_icon="📅", layout="centered")
+st.set_page_config(page_title="Pro Calendar Generator", page_icon="📄", layout="centered")
 
-# ---------- CUSTOM CSS (clean, no syntax errors) ----------
-st.markdown(
-    """
-    <style>
-        .stApp {
-            background-color: #0a192f;
-        }
-        .stApp * {
-            color: #e6f1ff !important;
-        }
-        section[data-testid="stSidebar"] {
-            background-color: #112240 !important;
-        }
-        .stButton button {
-            background-color: #1a5a8c !important;
-            color: white !important;
-            border-radius: 8px !important;
-            border: none !important;
-            font-weight: bold !important;
-        }
-        .stButton button:hover {
-            background-color: #2a6a9c !important;
-        }
-        .stButton button[kind="primary"] {
-            background-color: #00b4d8 !important;
-            color: #0a192f !important;
-            font-size: 22px !important;
-            font-weight: 900 !important;
-            padding: 12px 0px !important;
-            border-radius: 12px !important;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.5) !important;
-            border: 2px solid #90e0ef !important;
-            text-transform: uppercase !important;
-            letter-spacing: 1px !important;
-        }
-        .stButton button[kind="primary"]:hover {
-            background-color: #90e0ef !important;
-            color: #0a192f !important;
-            transform: scale(1.02) !important;
-            box-shadow: 0 0 40px rgba(0, 180, 216, 0.8) !important;
-        }
-        .stFileUploader {
-            background-color: #112240 !important;
-            border: 2px dashed #233554 !important;
-            border-radius: 10px !important;
-        }
-        .stSelectbox, .stNumberInput {
-            background-color: #112240 !important;
-            border-radius: 8px !important;
-        }
-        .stAlert, .stSuccess, .stError, .stWarning {
-            background-color: #112240 !important;
-            border-left: 4px solid #64ffda !important;
-        }
-        .stDownloadButton button {
-            background-color: #0a192f !important;
-            border: 1px solid #233554 !important;
-            color: #64ffda !important;
-        }
-        .stDownloadButton button:hover {
-            background-color: #1a5a8c !important;
-            color: white !important;
-        }
-        h1, h2, h3, h4, h5, h6 {
-            color: #64ffda !important;
-        }
-        hr {
-            border-color: #233554 !important;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# ---------- NAVY THEME (full match) ----------
+st.markdown("""
+<style>
+    /* Main background */
+    .stApp, .stApp > header, .stApp > div {
+        background-color: #0a192f !important;
+    }
+    /* All text white */
+    .stApp * {
+        color: #e6f1ff !important;
+    }
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #112240 !important;
+        border-right: 1px solid #233554 !important;
+    }
+    /* Headings */
+    h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {
+        color: #64ffda !important;
+    }
+    /* Buttons (normal) */
+    .stButton button {
+        background-color: #1a5a8c !important;
+        color: white !important;
+        border-radius: 8px !important;
+        border: none !important;
+        font-weight: bold !important;
+    }
+    .stButton button:hover {
+        background-color: #2a6a9c !important;
+    }
+    /* CREATE PDF BUTTON (with icon) */
+    .stButton button[kind="primary"] {
+        background-color: #e63946 !important;  /* Adobe red */
+        color: white !important;
+        font-size: 24px !important;
+        font-weight: 900 !important;
+        padding: 14px 0px !important;
+        border-radius: 12px !important;
+        box-shadow: 0 0 25px rgba(230, 57, 70, 0.6) !important;
+        border: 2px solid #ff6b6b !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+        transition: 0.2s !important;
+    }
+    .stButton button[kind="primary"]:hover {
+        background-color: #ff6b6b !important;
+        color: #0a192f !important;
+        transform: scale(1.03) !important;
+        box-shadow: 0 0 50px rgba(230, 57, 70, 0.9) !important;
+    }
+    /* File uploader */
+    .stFileUploader {
+        background-color: #112240 !important;
+        border: 2px dashed #233554 !important;
+        border-radius: 10px !important;
+    }
+    /* Inputs */
+    .stSelectbox, .stNumberInput {
+        background-color: #112240 !important;
+        border-radius: 8px !important;
+    }
+    /* Alerts */
+    .stAlert, .stSuccess, .stError, .stWarning {
+        background-color: #112240 !important;
+        border-left: 4px solid #64ffda !important;
+    }
+    /* Download button */
+    .stDownloadButton button {
+        background-color: #0a192f !important;
+        border: 1px solid #233554 !important;
+        color: #64ffda !important;
+    }
+    .stDownloadButton button:hover {
+        background-color: #1a5a8c !important;
+        color: white !important;
+    }
+    /* Divider */
+    hr {
+        border-color: #233554 !important;
+    }
+    /* Footer (if any) */
+    footer {
+        visibility: hidden;
+    }
+</style>
+""", unsafe_allow_html=True)
 
-st.title("📅 Professional Calendar Generator")
+st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
 with st.sidebar:
@@ -100,7 +114,8 @@ with st.sidebar:
     st.subheader("🖼️ Upload Images")
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
-    generate_btn = st.button("✨ Create", type="primary", use_container_width=True)
+    # ----- BUTTON WITH PDF ICON -----
+    generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
 def get_holidays(year, country):
     h = {}
