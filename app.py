@@ -134,82 +134,80 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR BOX (ONLY BACKGROUND FIX) ---------- */
-    /* Outer wrapper */
-    .stNumberInput > div {{
+    /* ---------- YEAR BOX (FIXED: single unified pill, testid-based) ---------- */
+    div[data-testid="stNumberInput"] {{
+        width: 100% !important;
+    }}
+    div[data-testid="stNumberInputContainer"],
+    div[data-testid="stNumberInput"] > div {{
+        display: flex !important;
+        align-items: stretch !important;
+        width: 100% !important;
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
         border-radius: 8px !important;
-        padding: 0px 4px !important;
-        min-height: 34px !important;
-        display: flex !important;
-        align-items: center !important;
+        overflow: hidden !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
         transition: 0.2s !important;
-        width: 100% !important;
+        padding: 0 !important;
     }}
-    .stNumberInput > div:hover {{
+    div[data-testid="stNumberInputContainer"]:hover,
+    div[data-testid="stNumberInput"] > div:hover {{
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Input field */
-    .stNumberInput input {{
-        background: {card_bg} !important;
+    div[data-testid="stNumberInput"] div[data-baseweb="input"] {{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+    }}
+    div[data-testid="stNumberInput"] div[data-baseweb="base-input"] {{
+        background: transparent !important;
+        border: none !important;
+    }}
+    div[data-testid="stNumberInput"] input {{
+        background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         padding: 0px 8px !important;
         margin: 0px !important;
-        height: auto !important;
+        height: 34px !important;
         color: {input_text} !important;
         text-align: center !important;
-        flex: 1 !important;
+        width: 100% !important;
         font-size: 14px !important;
         font-weight: 600 !important;
-        min-height: 34px !important;
-        width: 100% !important;
-        order: 1 !important;
     }}
-    /* Buttons */
-    .stNumberInput button {{
+    div[data-testid="stNumberInput"] button {{
         background: {card_bg} !important;
         border: none !important;
-        border-left: 1px solid {border} !important;
         border-radius: 0 !important;
         box-shadow: none !important;
         padding: 0px 12px !important;
         color: {text} !important;
         min-width: 32px !important;
-        height: 34px !important;
+        flex: 0 0 auto !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         font-size: 18px !important;
         transition: 0.2s !important;
         margin: 0 !important;
-        order: 0 !important;
         line-height: 1 !important;
         cursor: pointer !important;
     }}
-    .stNumberInput button:first-of-type {{
-        border-left: none !important;
-        border-radius: 8px 0 0 8px !important;
+    div[data-testid="stNumberInputStepDown"] {{
+        border-right: 1px solid {border} !important;
+        order: -1 !important;
     }}
-    .stNumberInput button:last-of-type {{
-        border-radius: 0 8px 8px 0 !important;
+    div[data-testid="stNumberInputStepUp"] {{
         border-left: 1px solid {border} !important;
     }}
-    .stNumberInput button:hover {{
+    div[data-testid="stNumberInput"] button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
-        border-left-color: {heading} !important;
-    }}
-    .stNumberInput button:first-of-type:hover {{
-        border-left-color: transparent !important;
-        border-right-color: {heading} !important;
-    }}
-    .stNumberInput button:last-of-type:hover {{
-        border-left-color: {heading} !important;
-        border-right-color: transparent !important;
     }}
 
     /* ---------- UPLOAD BOX ---------- */
