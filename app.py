@@ -17,7 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- THEME SELECTOR (TOP-RIGHT, SIDEBAR SE HATAO) ----------
+# ---------- THEME SELECTOR (TOP-RIGHT) ----------
 col1, col2 = st.columns([6, 1])
 with col2:
     theme = st.selectbox(
@@ -73,7 +73,7 @@ css = f"""
     .stApp * {{ color: {text} !important; }}
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{ color: {heading} !important; }}
 
-    /* ---- PLUS/MINUS BUTTONS (ab dikhenge) ---- */
+    /* ---- PLUS/MINUS BUTTONS ---- */
     .stNumberInput button {{
         background-color: {btn_bg} !important;
         color: {text} !important;
@@ -94,18 +94,36 @@ css = f"""
         padding: 8px !important;
     }}
 
-    /* ---- UPLOAD BOX (bada aur clean) ---- */
+    /* ---- UPLOAD BOX (LANDSCAPE, PROFESSIONAL) ---- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
-        border-radius: 12px !important;
-        padding: 40px 20px !important;
-        min-height: 150px !important;
+        border-radius: 16px !important;
+        padding: 60px 40px !important;
+        min-height: 200px !important;
+        width: 100% !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+        transition: 0.3s !important;
     }}
+    .stFileUploader:hover {{
+        border-color: {heading} !important;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
+    }}
+    /* Upload box ke andar sab text visible */
     .stFileUploader * {{
+        color: {text} !important;
+        font-size: 16px !important;
+    }}
+    .stFileUploader div {{
+        color: {text} !important;
+    }}
+    .stFileUploader span {{
+        color: {text} !important;
+    }}
+    .stFileUploader .st-emotion-cache-1jicfl2 {{
         color: {text} !important;
     }}
 
@@ -177,7 +195,7 @@ st.markdown(css, unsafe_allow_html=True)
 st.title("📄 Professional Calendar Generator")
 st.markdown("Upload 13 photos, select year, and get a print-ready PDF instantly!")
 
-# ---------- SIDEBAR (Theme ab yahan nahi hai) ----------
+# ---------- SIDEBAR ----------
 with st.sidebar:
     st.header("⚙️ Settings")
     year = st.number_input("Year", min_value=2024, max_value=2040, value=2027, step=1)
@@ -191,7 +209,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
-# ---------- HOLIDAYS & PDF GENERATION (same) ----------
+# ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
