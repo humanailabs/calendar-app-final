@@ -139,16 +139,16 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT (FULLY MATCH DROPDOWN) ---------- */
-    /* Entire number input component */
+    /* ---------- YEAR INPUT (100% MATCH DROPDOWN + BUTTONS LEFT) ---------- */
     .stNumberInput {{
         width: 100% !important;
     }}
+    /* Outer wrapper - exactly like dropdown */
     .stNumberInput > div {{
         background-color: {card_bg} !important;
         border: 1px solid {border} !important;
         border-radius: 8px !important;
-        padding: 0px 0px 0px 12px !important;
+        padding: 0px 4px 0px 4px !important;
         min-height: 34px !important;
         display: flex !important;
         align-items: center !important;
@@ -160,12 +160,12 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
-    /* Input field */
+    /* Input field - flex to take space, centered text */
     .stNumberInput input {{
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        padding: 0px !important;
+        padding: 0px 4px !important;
         margin: 0px !important;
         height: auto !important;
         color: {input_text} !important;
@@ -174,16 +174,17 @@ css = f"""
         font-size: 14px !important;
         font-weight: 600 !important;
         min-height: 34px !important;
+        order: 1 !important;
         width: auto !important;
     }}
-    /* Buttons */
+    /* Both buttons - on the LEFT side */
     .stNumberInput button {{
         background: transparent !important;
         border: none !important;
-        border-left: 1px solid {border} !important;
+        border-right: 1px solid {border} !important;
         border-radius: 0 !important;
         box-shadow: none !important;
-        padding: 0px 12px !important;
+        padding: 0px 10px !important;
         color: {text} !important;
         min-width: 32px !important;
         height: 34px !important;
@@ -194,18 +195,21 @@ css = f"""
         transition: 0.2s !important;
         margin: 0 !important;
         background-color: transparent !important;
+        order: 0 !important;
         line-height: 1 !important;
     }}
+    /* Remove right border from the last button (+ button) */
+    .stNumberInput button:last-of-type {{
+        border-right: none !important;
+        border-radius: 0 !important;
+    }}
+    /* Hover effect for buttons */
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
-        border-left-color: {heading} !important;
+        border-right-color: {heading} !important;
     }}
-    /* Rounding right button */
-    .stNumberInput button:last-of-type {{
-        border-radius: 0 8px 8px 0 !important;
-    }}
-    /* Remove left border from minus button */
+    /* First button (-) - no left border, but we keep right border */
     .stNumberInput button:first-of-type {{
         border-left: none !important;
     }}
