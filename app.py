@@ -73,6 +73,24 @@ css = f"""
     .stApp * {{ color: {text} !important; }}
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{ color: {heading} !important; }}
 
+    /* ---- MOBILE SPACING FIX ---- */
+    @media (max-width: 768px) {{
+        .main > div {{
+            padding-top: 0.5rem !important;
+        }}
+        .stTitle {{
+            margin-top: -0.5rem !important;
+            padding-top: 0 !important;
+        }}
+        .stMarkdown {{
+            margin-top: -0.5rem !important;
+        }}
+        .stFileUploader {{
+            padding: 30px 15px !important;
+            min-height: 140px !important;
+        }}
+    }}
+
     /* ---- PLUS/MINUS BUTTONS ---- */
     .stNumberInput button {{
         background-color: {btn_bg} !important;
@@ -94,7 +112,7 @@ css = f"""
         padding: 8px !important;
     }}
 
-    /* ---- UPLOAD BOX (FIXED - CLEAN FLOW) ---- */
+    /* ---- UPLOAD BOX (CLEAN, VISIBLE TEXT) ---- */
     .stFileUploader {{
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
@@ -109,13 +127,12 @@ css = f"""
         border-color: {heading} !important;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2) !important;
     }}
-    /* Upload box ke andar saare text normal flow mein */
+    /* Force all text inside uploader to use theme text color */
     .stFileUploader * {{
         color: {text} !important;
         font-size: 15px !important;
         line-height: 1.6 !important;
     }}
-    /* Select Images button ko bhi sahi dikhao */
     .stFileUploader button {{
         background-color: {heading} !important;
         color: {bg} !important !important;
