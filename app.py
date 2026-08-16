@@ -10,7 +10,6 @@ import shutil
 import io
 from datetime import datetime
 
-# ---------- STREAMLIT CONFIG (Disable default theme toggle) ----------
 st.set_page_config(
     page_title="Pro Calendar Generator",
     page_icon="📄",
@@ -18,11 +17,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ---------- THEME SELECTOR (Only this will work) ----------
+# ---------- THEME SELECTOR ----------
 theme = st.sidebar.selectbox(
     "🎨 Theme",
     ["Light", "Dark", "Navy Blue"],
-    index=2  # default Navy Blue
+    index=2
 )
 
 # ---------- THEME COLORS ----------
@@ -33,6 +32,7 @@ if theme == "Light":
     card_bg = "#ffffff"
     border = "#e0e0e0"
     heading = "#0066cc"
+    input_text = "#000000"
 elif theme == "Dark":
     bg = "#0e1117"
     text = "#fafafa"
@@ -40,6 +40,7 @@ elif theme == "Dark":
     card_bg = "#1e1e1e"
     border = "#3d3d3d"
     heading = "#64ffda"
+    input_text = "#fafafa"
 else:  # Navy Blue
     bg = "#0a192f"
     text = "#e6f1ff"
@@ -47,28 +48,31 @@ else:  # Navy Blue
     card_bg = "#1a2a4a"
     border = "#233554"
     heading = "#64ffda"
+    input_text = "#ffffff"
 
-# ---------- CSS (Overrides everything including top-left buttons) ----------
+# ---------- CSS ----------
 css = f"""
 <style>
-    /* Hide Streamlit's built-in theme toggle (top-left) */
-    #MainMenu {{ display: none !important; }}
-    .stAppDeployButton {{ display: none !important; }}
-    .stApp > header {{ display: none !important; }}
-    
-    /* Force our background everywhere */
-    .stApp, .stApp > div, .main > div {{
+    /* Main background */
+    .stApp {{
         background-color: {bg} !important;
     }}
-    /* Header (now hidden, but if visible we style it) */
+    /* Header (3 dots wala) - ab visible hai */
     header[data-testid="stHeader"] {{
         background-color: {bg} !important;
         border-bottom: 1px solid {border} !important;
+    }}
+    header[data-testid="stHeader"] * {{
+        color: {text} !important;
     }}
     /* Sidebar */
     section[data-testid="stSidebar"] {{
         background-color: {sidebar_bg} !important;
         border-right: 1px solid {border} !important;
+    }}
+    /* Main content */
+    .main > div {{
+        background-color: {bg} !important;
     }}
     /* All text */
     .stApp * {{
@@ -77,6 +81,23 @@ css = f"""
     /* Headings */
     h1, h2, h3, h4, h5, h6, .stMarkdown h1, .stMarkdown h2 {{
         color: {heading} !important;
+    }}
+    /* ---- INPUT FIELDS (Text dikhega ab) ---- */
+    .stNumberInput input, 
+    .stSelectbox div, 
+    .stSelectbox div div,
+    .stTextInput input,
+    .stTextArea textarea,
+    .stSelectbox div[data-baseweb="select"],
+    .stFileUploader span {{
+        background-color: {card_bg} !important;
+        color: {input_text} !important;
+        border-radius: 8px !important;
+    }}
+    /* Placeholder text */
+    .stNumberInput input::placeholder,
+    .stTextInput input::placeholder {{
+        color: #aaaaaa !important;
     }}
     /* Normal buttons */
     .stButton button {{
@@ -114,11 +135,6 @@ css = f"""
         background-color: {card_bg} !important;
         border: 2px dashed {border} !important;
         border-radius: 10px !important;
-    }}
-    /* Selectbox & Number input */
-    .stSelectbox, .stNumberInput {{
-        background-color: {card_bg} !important;
-        border-radius: 8px !important;
     }}
     /* Alerts */
     .stAlert, .stSuccess, .stError, .stWarning {{
@@ -163,7 +179,7 @@ with st.sidebar:
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
-# ---------- HOLIDAYS & PDF GENERATION (same as before) ----------
+# ---------- HOLIDAYS ----------
 def get_holidays(year, country):
     h = {}
     if country == "Switzerland":
@@ -188,6 +204,7 @@ def get_holidays(year, country):
         h = {(1,1):"New Year", (3,17):"Holi", (4,2):"Good Fri", (5,1):"Labour", (5,6):"Ascension", (8,15):"Independence", (11,4):"Diwali", (12,25):"Christmas"}
     return h
 
+# ---------- PDF GENERATION ----------
 def generate_pdf(year, country, uploaded_files):
     temp_dir = tempfile.mkdtemp()
     img_dir = os.path.join(temp_dir, "images")
