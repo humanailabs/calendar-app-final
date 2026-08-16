@@ -84,6 +84,7 @@ css = f"""
         section[data-testid="stSidebar"] .stMarkdown {{ margin-top: -0.1rem !important; font-size: 0.6rem !important; }}
         section[data-testid="stSidebar"] .stSubheader {{ font-size: 0.65rem !important; margin-top: -0.1rem !important; }}
         .stNumberInput {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
+        .stNumberInput > div {{ min-height: 24px !important; padding: 0px 6px !important; }}
         .stNumberInput input {{ padding: 0px 4px !important; font-size: 13px !important; height: 22px !important; }}
         .stNumberInput button {{ padding: 0px 4px !important; font-size: 16px !important; height: 22px !important; min-width: 24px !important; }}
         .stSelectbox {{ margin-top: -0.4rem !important; margin-bottom: 0rem !important; }}
@@ -138,38 +139,64 @@ css = f"""
         background: transparent !important;
     }}
 
-    /* ---------- YEAR INPUT & +/- BUTTONS (MATCH DROPDOWN) ---------- */
-    .stNumberInput input {{
+    /* ---------- YEAR INPUT (FIX: FULLY MATCH DROPDOWN) ---------- */
+    /* Make the entire number input wrapper behave like the selectbox */
+    .stNumberInput > div {{
         background-color: {card_bg} !important;
-        color: {input_text} !important;
-        border-radius: 8px !important;
         border: 1px solid {border} !important;
-        padding: 6px !important;
-        text-align: center !important;
-        font-weight: 600 !important;
+        border-radius: 8px !important;
+        padding: 0px 0px 0px 12px !important;
+        min-height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
         box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
         transition: 0.2s !important;
     }}
-    .stNumberInput input:hover {{
+    .stNumberInput > div:hover {{
         border-color: {heading} !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
     }}
+    /* Remove background/border from inner input and make it take space */
+    .stNumberInput input {{
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0px !important;
+        height: auto !important;
+        color: {input_text} !important;
+        text-align: center !important;
+        flex: 1 !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+    }}
+    /* Style the buttons to blend into the unified bar */
     .stNumberInput button {{
-        background-color: {card_bg} !important;
-        color: {text} !important;
-        border: 1px solid {border} !important;
-        border-radius: 8px !important;
+        background: transparent !important;
+        border: none !important;
+        border-left: 1px solid {border} !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
         padding: 4px 10px !important;
-        font-size: 18px !important;
+        color: {text} !important;
         min-width: 32px !important;
+        height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 18px !important;
         transition: 0.2s !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
     }}
     .stNumberInput button:hover {{
         background-color: {heading} !important;
         color: {bg} !important;
-        border-color: {heading} !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+        border-left-color: {heading} !important;
+    }}
+    /* Rounded corners for the group */
+    .stNumberInput button:last-child {{
+        border-radius: 0 8px 8px 0 !important;
+    }}
+    .stNumberInput button:first-child {{
+        border-left: none !important;
     }}
 
     /* ---------- UPLOAD BOX ---------- */
