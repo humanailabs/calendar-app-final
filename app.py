@@ -93,13 +93,13 @@ css = f"""
         section[data-testid="stSidebar"] {{ padding: 0.4rem 0.5rem !important; }}
         section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {{ gap: 0.55rem !important; }}
         section[data-testid="stSidebar"] .stHeading h2 {{ font-size: 1rem !important; margin: 0 !important; padding: 0 !important; }}
-        section[data-testid="stSidebar"] .stMarkdown p {{ font-size: 0.75rem !important; margin: 0 !important; }}
+        section[data-testid="stSidebar"] .stMarkdown p {{ font-size: 0.75rem !important; margin: 0 0 6px 0 !important; }}
         section[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p {{ font-size: 0.8rem !important; margin: 0 0 2px 0 !important; }}
         .stDivider {{ margin: 0.15rem 0 !important; padding: 0 !important; }}
         hr {{ margin: 0.15rem 0 !important; }}
         .stButton button {{ font-size: 13px !important; padding: 4px 0px !important; min-height: 32px !important; }}
         .stButton button[kind="primary"] {{ font-size: 15px !important; padding: 6px 0px !important; min-height: 36px !important; }}
-        .stFileUploader {{ min-height: 55px !important; padding: 8px 8px !important; }}
+        .stFileUploader {{ min-height: 55px !important; padding: 8px 8px !important; margin-top: 4px !important; }}
         .stFileUploader * {{ font-size: 11px !important; line-height: 1.2 !important; }}
         .stFileUploader button {{ padding: 2px 10px !important; font-size: 11px !important; margin: 3px 0 !important; }}
         .stFileUploader svg {{ width: 16px !important; height: 16px !important; }}
@@ -341,6 +341,47 @@ css = f"""
         50% {{ box-shadow: 0 0 22px rgba(30,136,229,0.95); }}
     }}
 
+    /* ---------- FOOTER SOCIAL BADGES (small, shining, clickable) ---------- */
+    .app-footer {{
+        margin-top: 2.5rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid {border};
+        text-align: center;
+    }}
+    .app-footer .social-row {{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 0.7rem;
+    }}
+    .app-footer .social-badge {{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: #ffffff;
+        box-shadow: 0 0 8px rgba(100, 255, 218, 0.55);
+        transition: 0.25s;
+        text-decoration: none;
+    }}
+    .app-footer .social-badge img {{
+        width: 18px;
+        height: 18px;
+    }}
+    .app-footer .social-badge:hover {{
+        transform: translateY(-3px) scale(1.12);
+        box-shadow: 0 0 18px rgba(100, 255, 218, 0.95);
+    }}
+    .app-footer .copyright-line {{
+        font-size: 0.78rem;
+        opacity: 0.8;
+        margin: 0;
+    }}
+
     /* ---------- HIDE NATIVE STREAMLIT MENU (System/Light/Dark/Print) ----------
        This menu is Streamlit's own built-in theme switcher — it cannot be
        synced with our custom Light/Dark/Navy Blue dropdown, so we hide it
@@ -535,3 +576,30 @@ if generate_btn or print_clicked_top:
                 )
             except Exception as e:
                 st.error(f"Error: {e}")
+
+# ---------- FOOTER: SOCIAL PROFILE BADGES + COPYRIGHT ----------
+st.markdown("""
+<div class="app-footer">
+  <div class="social-row">
+    <a class="social-badge" href="https://x.com/udprocks190" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
+      <img src="https://cdn.simpleicons.org/x/000000" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='X';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='13px';this.parentElement.style.color='#000';" />
+    </a>
+    <a class="social-badge" href="https://www.linkedin.com/in/jitendrapatel87" target="_blank" rel="noopener noreferrer" title="LinkedIn">
+      <img src="https://cdn.simpleicons.org/linkedin/0A66C2" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='in';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='13px';this.parentElement.style.color='#0A66C2';" />
+    </a>
+    <a class="social-badge" href="https://www.fiverr.com/jitendrapate405" target="_blank" rel="noopener noreferrer" title="Fiverr">
+      <img src="https://cdn.simpleicons.org/fiverr/1DBF73" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Fi';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='12px';this.parentElement.style.color='#1DBF73';" />
+    </a>
+    <a class="social-badge" href="https://www.upwork.com/freelancers/~0182dcb9abc981430b?mp_source=share" target="_blank" rel="noopener noreferrer" title="Upwork">
+      <img src="https://cdn.simpleicons.org/upwork/6FDA44" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Up';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='11px';this.parentElement.style.color='#6FDA44';" />
+    </a>
+    <a class="social-badge" href="https://www.guru.com/freelancers/jitendrap" target="_blank" rel="noopener noreferrer" title="Guru">
+      <img src="https://cdn.simpleicons.org/guru/00B14F" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Gu';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='11px';this.parentElement.style.color='#00B14F';" />
+    </a>
+    <a class="social-badge" href="https://www.peopleperhour.com/freelancer/business/jitendra-patel-web-scrapper-data-entry-assistant-yzaymjv" target="_blank" rel="noopener noreferrer" title="PeoplePerHour">
+      <img src="https://cdn.simpleicons.org/peopleperhour/FF7342" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='PPH';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='9px';this.parentElement.style.color='#FF7342';" />
+    </a>
+  </div>
+  <p class="copyright-line">© 2026 HumanAI Labs — crafted with care, one calendar at a time.</p>
+</div>
+""", unsafe_allow_html=True)
