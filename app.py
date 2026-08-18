@@ -439,6 +439,10 @@ with st.sidebar:
     st.subheader("🖼️ Upload Images")
     st.markdown("**Upload 13 images:** 1 Cover + 12 Months")
     uploaded_files = st.file_uploader("Select Images", type=['jpg', 'jpeg', 'png'], accept_multiple_files=True)
+    terms_agreed = st.checkbox(
+        "I confirm these photos are mine, or I have the rights/permission to use them.",
+        key="terms_agreed"
+    )
     generate_btn = st.button("📄 Create PDF", type="primary", use_container_width=True)
 
 # ---------- HOLIDAYS ----------
@@ -571,7 +575,9 @@ def generate_pdf(year, country, uploaded_files):
     return pdf_buffer
 
 if generate_btn or print_clicked_top:
-    if not uploaded_files:
+    if not terms_agreed:
+        st.error("❌ Please confirm you own the rights to use these photos (checkbox in sidebar) before generating.")
+    elif not uploaded_files:
         st.error("❌ Please upload at least 1 image.")
     elif len(uploaded_files) < 2:
         st.warning("⚠️ You uploaded only a few. For best results, upload 13 images (Cover + 12 months).")
@@ -615,5 +621,8 @@ st.markdown("""
     </a>
   </div>
   <p class="copyright-line">© 2026 HumanAI Labs — crafted with care, one calendar at a time.</p>
+  <p class="copyright-line" style="margin-top:4px;">
+    <a href="mailto:humanailabs@outlook.com?subject=Report%20Content%20Issue" style="color:inherit; text-decoration:underline;">Report misuse / Contact</a>
+  </p>
 </div>
 """, unsafe_allow_html=True)
