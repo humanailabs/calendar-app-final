@@ -341,7 +341,7 @@ css = f"""
         50% {{ box-shadow: 0 0 22px rgba(30,136,229,0.95); }}
     }}
 
-    /* ---------- FOOTER SOCIAL BADGES (small, shining, clickable) ---------- */
+    /* ---------- FOOTER SOCIAL BADGES (small, shining blue pills, matching Print button) ---------- */
     .app-footer {{
         margin-top: 2.5rem;
         padding-top: 1.2rem;
@@ -352,7 +352,7 @@ css = f"""
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         flex-wrap: wrap;
         margin-bottom: 0.7rem;
     }}
@@ -360,21 +360,25 @@ css = f"""
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        background: #ffffff;
-        box-shadow: 0 0 8px rgba(100, 255, 218, 0.55);
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #1565c0, #42a5f5);
+        border: 1px solid #90caf9;
+        box-shadow: 0 0 10px rgba(30,136,229,0.65);
+        animation: printGlow 2.4s ease-in-out infinite;
         transition: 0.25s;
         text-decoration: none;
     }}
     .app-footer .social-badge img {{
-        width: 18px;
-        height: 18px;
+        width: 14px;
+        height: 14px;
+        filter: brightness(0) invert(1);
     }}
     .app-footer .social-badge:hover {{
-        transform: translateY(-3px) scale(1.12);
-        box-shadow: 0 0 18px rgba(100, 255, 218, 0.95);
+        transform: translateY(-3px) scale(1.15);
+        background: linear-gradient(135deg, #1976d2, #64b5f6);
+        box-shadow: 0 0 22px rgba(30,136,229,0.95);
     }}
     .app-footer .copyright-line {{
         font-size: 0.78rem;
@@ -582,22 +586,28 @@ st.markdown("""
 <div class="app-footer">
   <div class="social-row">
     <a class="social-badge" href="https://x.com/udprocks190" target="_blank" rel="noopener noreferrer" title="X (Twitter)">
-      <img src="https://cdn.simpleicons.org/x/000000" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='X';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='13px';this.parentElement.style.color='#000';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/x.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:13px;\\'>X</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/x.svg';" />
     </a>
     <a class="social-badge" href="https://www.linkedin.com/in/jitendrapatel87" target="_blank" rel="noopener noreferrer" title="LinkedIn">
-      <img src="https://cdn.simpleicons.org/linkedin/0A66C2" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='in';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='13px';this.parentElement.style.color='#0A66C2';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/linkedin.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:12px;\\'>in</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/linkedin.svg';" />
     </a>
     <a class="social-badge" href="https://www.fiverr.com/jitendrapate405" target="_blank" rel="noopener noreferrer" title="Fiverr">
-      <img src="https://cdn.simpleicons.org/fiverr/1DBF73" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Fi';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='12px';this.parentElement.style.color='#1DBF73';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/fiverr.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:10px;\\'>Fi</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/fiverr.svg';" />
     </a>
     <a class="social-badge" href="https://www.upwork.com/freelancers/~0182dcb9abc981430b?mp_source=share" target="_blank" rel="noopener noreferrer" title="Upwork">
-      <img src="https://cdn.simpleicons.org/upwork/6FDA44" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Up';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='11px';this.parentElement.style.color='#6FDA44';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/upwork.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:9px;\\'>Up</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/upwork.svg';" />
     </a>
     <a class="social-badge" href="https://www.guru.com/freelancers/jitendrap" target="_blank" rel="noopener noreferrer" title="Guru">
-      <img src="https://cdn.simpleicons.org/guru/00B14F" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='Gu';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='11px';this.parentElement.style.color='#00B14F';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/guru.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:9px;\\'>Gu</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/guru.svg';" />
     </a>
     <a class="social-badge" href="https://www.peopleperhour.com/freelancer/business/jitendra-patel-web-scrapper-data-entry-assistant-yzaymjv" target="_blank" rel="noopener noreferrer" title="PeoplePerHour">
-      <img src="https://cdn.simpleicons.org/peopleperhour/FF7342" onerror="this.onerror=null;this.src='';this.parentElement.innerHTML='PPH';this.parentElement.style.fontWeight='900';this.parentElement.style.fontSize='9px';this.parentElement.style.color='#FF7342';" />
+      <img src="https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/peopleperhour.svg"
+           onerror="this.onerror=function(){this.parentElement.innerHTML='<span style=\\'color:#fff;font-weight:900;font-size:7px;\\'>PPH</span>';};this.src='https://unpkg.com/simple-icons@latest/icons/peopleperhour.svg';" />
     </a>
   </div>
   <p class="copyright-line">© 2026 HumanAI Labs — crafted with care, one calendar at a time.</p>
